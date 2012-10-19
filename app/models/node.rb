@@ -93,9 +93,22 @@ class Node < ActiveRecord::Base
   end
 
   def configuration
+    classes = Hash.new
+    all_node_classes.collect(&:name).each do |node_class|
+      class_params = Hash.new
+      class_id = NodeClass.find_by_name(node_class)
+      if node_class_membership = NodeClassMembership.find_by_node_id_and_node_class_id(id, class_id)
+        node_class_membership.parameters.each do |param|
+          class_params[param.key] = param.value
+        end
+      end
+
+      classes[node_class] = class_params
+    end
+
     {
       'name'       => name,
-      'classes'    => all_node_classes.collect(&:name),
+      'classes'    => classes,
       'parameters' => parameter_list
     }
   end
