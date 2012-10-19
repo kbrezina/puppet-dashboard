@@ -10,6 +10,7 @@
         - resource.node_classes_with_sources.each do |node_class,sources|
           %tr
             %td.name
+              = link_to(h('params'),node_class_membership_path(NodeClassMembership.find_by_node_id_and_node_class_id(resource.id, node_class.id)))
               %strong= link_to(h(node_class.name),node_class)
             %td
               - if sources.include?(resource)
