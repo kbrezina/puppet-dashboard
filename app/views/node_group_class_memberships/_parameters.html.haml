@@ -1,0 +1,16 @@
+.element
+
+
+  %h3 Parameters    
+
+  - unless resource.parameters.blank?
+
+    %table.inspector
+      %thead
+        %tr 
+          %th{:scope => :col} Key 
+          %th{:scope => :col} Value
+      %tbody
+        = render :partial => 'parameters/parameter', :collection => resource.parameters
+  - else
+    \- No Parameters -

@@ -10,7 +10,13 @@
         - resource.node_classes_with_sources.each do |node_class,sources|
           %tr
             %td.name
-              = link_to(h('params'),node_class_membership_path(NodeClassMembership.find_by_node_id_and_node_class_id(resource.id, node_class.id)))
+              - if resource.class == NodeGroup
+                - membership = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(resource.id, node_class.id)
+                - path       = node_group_class_membership_path(membership)
+              - else
+                - membership = NodeClassMembership.find_by_node_id_and_node_class_id(resource.id, node_class.id)
+                - path       = node_class_membership_path(membership)
+              = link_to(h('params'),path)
               %strong= link_to(h(node_class.name),node_class)
             %td
               - if sources.include?(resource)
