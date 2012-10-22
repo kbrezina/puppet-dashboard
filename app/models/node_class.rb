@@ -28,18 +28,6 @@ class NodeClass < ActiveRecord::Base
     super({:methods => :description, :only => [:name, :id]}.merge(options))
   end
 
-  def parameters
-    params = Hash.new
-    node_group_class_memberships.each do |node_group_class_membership|
-      node_group_class_membership.parameters.each { |p| params[p.key] = p.value }
-    end
-
-    node_class_memberships.each do |node_class_membership|
-      node_class_membership.parameters.each { |p| params[p.key] = p.value }
-    end
-    params
-  end
-
   def <=>(rhs)
     self.name <=> rhs.name
   end
