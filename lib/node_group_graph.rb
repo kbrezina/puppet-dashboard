@@ -42,11 +42,6 @@ module NodeGroupGraph
     node_classes_with_sources.keys
   end
 
-  def get_class_parameters_conflicts(class_membership)
-    compile_class_parameters(class_membership, true)
-    return @compiled_class_parameters[class_membership].conflicts
-  end
-
   def compile_class_parameters(class_membership, allow_conflicts=false)
     if @compiled_class_parameters.nil?
       @compiled_class_parameters = {}
