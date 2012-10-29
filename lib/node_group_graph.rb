@@ -106,13 +106,13 @@ module NodeGroupGraph
         node_class_parameters = Hash.new
         if group.class == NodeGroup
           if membership = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(group.id,node_class.id)
-            self.compile_class_parameters(membership).each do |param|
+            self.compile_class_parameters(membership, true).each do |param|
               node_class_parameters[param.name] = param.value
             end
           end
         else
           if membership = NodeClassMembership.find_by_node_id_and_node_class_id(group.id,node_class.id)
-            self.compile_class_parameters(membership).each do |param|
+            self.compile_class_parameters(membership, true).each do |param|
               node_class_parameters[param.name] = param.value
             end
           end
