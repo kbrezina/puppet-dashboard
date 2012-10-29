@@ -42,48 +42,60 @@ module NodeGroupGraph
     node_classes_with_sources.keys
   end
 
-  def compile_class_parameters(class_membership)
-    compiled_parameters = self.walk_parent_groups do |group,parents|
-      # Pick-up conflicts that our parents had
-      parent_params = parents.map(&:parameters).flatten
-      conflicts = parents.map(&:conflicts).inject(Set.new,&:merge)
+  def get_class_parameters_conflicts(class_membership)
+    compile_class_parameters(class_membership, true)
+    return @compiled_class_parameters[class_membership].conflicts
+  end
 
-      params = Hash.new
-
-      membership = if group.is_a? NodeGroup
-                      NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(group.id, class_membership.node_class_id)
-                    else
-                      NodeClassMembership.find_by_node_id_and_node_class_id(group.id, class_membership.node_class_id)
-                    end
-
-      #If a parent group doesn't have the class declared, skip it
-      if membership
-        membership.parameters.to_hash.each do |key,value|
-          params[key] = OpenStruct.new :name => key, :value => value, :sources => Set[group]
-        end
-      end
-
-      #Now collect our inherited params and their conflicts
-      inherited = {}
-      parent_params.each do |parameter|
-        if inherited[parameter.name] && inherited[parameter.name].value != parameter.value
-          conflicts.add(parameter.name)
-          inherited[parameter.name].sources << parameter.sources.first
-        else
-          inherited[parameter.name] = OpenStruct.new :name => parameter.name, :value => parameter.value, :sources => parameter.sources
-        end
-      end
-
-      # Resolve all conflicts resolved by the node/group itself
-      conflicts.delete_if {|key| params[key]}
-
-      OpenStruct.new :parameters => params.reverse_merge(inherited).values, :conflicts => conflicts
+  def compile_class_parameters(class_membership, allow_conflicts=false)
+    if @compiled_class_parameters.nil?
+      @compiled_class_parameters = {}
     end
 
-    compiled_parameters.conflicts.each { |key| errors.add(:parameters,key) }
+    unless @compiled_class_parameters[class_membership]
+      compiled_parameters = self.walk_parent_groups do |group,parents|
+        # Pick-up conflicts that our parents had
+        parent_params = parents.map(&:parameters).flatten
+        conflicts = parents.map(&:conflicts).inject(Set.new,&:merge)
+  
+        params = Hash.new
+  
+        membership = if group.is_a? NodeGroup
+                        NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(group.id, class_membership.node_class_id)
+                      else
+                        NodeClassMembership.find_by_node_id_and_node_class_id(group.id, class_membership.node_class_id)
+                      end
+  
+        #If a parent group doesn't have the class declared, skip it
+        if membership
+          membership.parameters.to_hash.each do |key,value|
+            params[key] = OpenStruct.new :name => key, :value => value, :sources => Set[group]
+          end
+        end
+  
+        #Now collect our inherited params and their conflicts
+        inherited = {}
+        parent_params.each do |parameter|
+          if inherited[parameter.name] && inherited[parameter.name].value != parameter.value
+            conflicts.add(parameter.name)
+            inherited[parameter.name].sources << parameter.sources.first
+          else
+            inherited[parameter.name] = OpenStruct.new :name => parameter.name, :value => parameter.value, :sources => parameter.sources
+          end
+        end
+  
+        # Resolve all conflicts resolved by the node/group itself
+        conflicts.delete_if {|key| params[key]}
+  
+        OpenStruct.new :parameters => params.reverse_merge(inherited).values, :conflicts => conflicts
+      end
+  
+      compiled_parameters.conflicts.each { |key| errors.add(:parameters,key) }
+      @compiled_class_parameters[class_membership] = compiled_parameters; 
+    end
 
-    #raise ParameterConflictError or @compiled_parameters.conflicts.empty?
-    compiled_parameters.parameters
+    raise ParameterConflictError unless allow_conflicts or @compiled_class_parameters[class_membership].conflicts.empty?
+    @compiled_class_parameters[class_membership].parameters
   end
 
   def node_classes_with_parameters
