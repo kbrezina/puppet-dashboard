@@ -10,6 +10,7 @@
         %li= link_to 'Delete', @node_group, :confirm => 'Are you sure?', :method => :delete, :class => "delete button"
 
   .item
+    = render 'shared/conflicts', :resource => @node_group
     - if SETTINGS.use_external_node_classification
       = render 'shared/parameters', :resource => @node_group
     = render 'shared/groups', :resource => @node_group

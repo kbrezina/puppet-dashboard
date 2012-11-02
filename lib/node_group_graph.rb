@@ -85,7 +85,7 @@ module NodeGroupGraph
         OpenStruct.new :parameters => params.reverse_merge(inherited).values, :conflicts => conflicts
       end
   
-      compiled_parameters.conflicts.each { |key| errors.add(:parameters,key) }
+      compiled_parameters.conflicts.each { |key| errors.add(:classParameters,key) }
       @compiled_class_parameters[class_membership] = compiled_parameters; 
     end
 
@@ -189,6 +189,36 @@ module NodeGroupGraph
     end
     raise ParameterConflictError unless allow_conflicts or @compiled_parameters.conflicts.empty?
     @compiled_parameters.parameters
+  end
+
+  def global_conflicts
+    if @global_conflicts.nil?
+      @global_conflicts = compiled_parameters(true).select { |param| param.sources.length() > 1 }
+    end
+
+    @global_conflicts
+  end
+
+  def class_conflicts
+    if @class_conflicts.nil?
+      @class_conflicts = {}
+
+      node_classes_with_sources.each do |node_class,sources|
+        if self.class == NodeGroup
+          membership = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(self.id, node_class.id)
+        else
+          membership = NodeClassMembership.find_by_node_id_and_node_class_id(self.id, node_class.id)
+        end
+        unless membership.nil?
+          params = compile_class_parameters(membership, true).select { |param| param.sources.length() > 1 }
+          unless params.blank?
+          @class_conflicts.merge!(node_class => params)
+          end
+        end
+      end
+    end
+
+    @class_conflicts
   end
 
   def parameter_list

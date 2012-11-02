@@ -4,11 +4,11 @@
   %h3 Parameters    
   - # Conflicting parameters are okay here, since we just want to warn
   - unless @node_group.compile_class_parameters(resource, true).empty?
-    - if @node_group.errors.on(:parameters)
+    - if @node_group.errors.on(:classParameters)
       %p.error
         %strong Warning:
         The following parameters have multiple conflicting values:
-        = h [*@node_group.errors.on(:parameters)].join(", ")
+        = h [*@node_group.errors.on(:classParameters)].join(", ")
     %table.inspector
       %thead
         %tr 
