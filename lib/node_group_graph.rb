@@ -52,22 +52,22 @@ module NodeGroupGraph
         # Pick-up conflicts that our parents had
         parent_params = parents.map(&:parameters).flatten
         conflicts = parents.map(&:conflicts).inject(Set.new,&:merge)
-  
+
         params = Hash.new
-  
+
         membership = if group.is_a? NodeGroup
                         NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(group.id, class_membership.node_class_id)
                       else
                         NodeClassMembership.find_by_node_id_and_node_class_id(group.id, class_membership.node_class_id)
                       end
-  
+
         #If a parent group doesn't have the class declared, skip it
         if membership
           membership.parameters.to_hash.each do |key,value|
             params[key] = OpenStruct.new :name => key, :value => value, :sources => Set[group]
           end
         end
-  
+
         #Now collect our inherited params and their conflicts
         inherited = {}
         parent_params.each do |parameter|
@@ -78,19 +78,86 @@ module NodeGroupGraph
             inherited[parameter.name] = OpenStruct.new :name => parameter.name, :value => parameter.value, :sources => parameter.sources
           end
         end
-  
+
         # Resolve all conflicts resolved by the node/group itself
         conflicts.delete_if {|key| params[key]}
-  
+
         OpenStruct.new :parameters => params.reverse_merge(inherited).values, :conflicts => conflicts
       end
-  
+
       compiled_parameters.conflicts.each { |key| errors.add(:classParameters,key) }
       @compiled_class_parameters[class_membership] = compiled_parameters; 
     end
 
     raise ParameterConflictError unless allow_conflicts or @compiled_class_parameters[class_membership].conflicts.empty?
     @compiled_class_parameters[class_membership].parameters
+  end
+
+  def compile_all_class_parameters
+    unless @all_compiled_class_parameters
+      @all_compiled_class_parameters = {}
+
+      compiled_parameters = self.walk_parent_groups do |group,parents|
+
+        parent_class_params = {}
+        parents.select { |parent| !parent.empty?}.each do |parent|
+          parent.each do |node_class, class_params|
+            if parent_class_params[node_class].nil?
+              parent_class_params[node_class] = []
+            end
+
+            parent_class_params[node_class] << class_params
+            parent_class_params[node_class].flatten!
+          end
+        end
+
+        merged_parent_class_params = {}
+        parent_class_params.each do |node_class, class_params|
+          merged_params = {}
+          class_params.each do |param|
+            if merged_params[param.name] &&
+              (merged_params[param.name].value != param.value || merged_params[param.name].sources.length > 1)
+              merged_params[param.name].sources.merge(param.sources)
+            else
+              merged_params[param.name] = OpenStruct.new :name => param.name, :value => param.value, :sources => param.sources
+            end
+          end
+          merged_parent_class_params[node_class] = merged_params
+        end
+
+        memberships = if group.is_a? NodeGroup
+                        group.node_group_class_memberships
+                      else
+                        group.node_class_memberships
+                      end
+
+        memberships.each do |membership|
+          if membership.parameters.length > 0
+            params = {}
+            membership.parameters.to_hash.each do |key,value|
+              params[key] = OpenStruct.new :name => key, :value => value, :sources => Set[group]
+            end
+
+            if merged_parent_class_params[membership.node_class].nil?
+              merged_parent_class_params[membership.node_class] = params
+            else
+              merged_parent_class_params[membership.node_class].merge!(params)
+            end
+          end
+        end
+
+        resolved_class_params = {}
+        merged_parent_class_params.each do |node_class, params|
+          resolved_class_params[node_class] = params.values
+        end
+
+        resolved_class_params
+      end
+
+      @all_compiled_class_parameters = compiled_parameters
+    end
+
+    @all_compiled_class_parameters
   end
 
   def node_classes_with_parameters
@@ -203,17 +270,10 @@ module NodeGroupGraph
     if @class_conflicts.nil?
       @class_conflicts = {}
 
-      node_classes_with_sources.each do |node_class,sources|
-        if self.class == NodeGroup
-          membership = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(self.id, node_class.id)
-        else
-          membership = NodeClassMembership.find_by_node_id_and_node_class_id(self.id, node_class.id)
-        end
-        unless membership.nil?
-          params = compile_class_parameters(membership, true).select { |param| param.sources.length() > 1 }
-          unless params.blank?
-          @class_conflicts.merge!(node_class => params)
-          end
+      compile_all_class_parameters.each do |node_class, params|
+        conflicting_params = params.select { |param| param.sources.length > 1 }
+        unless conflicting_params.blank?
+          @class_conflicts[node_class] = conflicting_params
         end
       end
     end
