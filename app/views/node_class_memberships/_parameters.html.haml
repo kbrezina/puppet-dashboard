@@ -9,7 +9,7 @@
       %p.error
         %strong Warning:
         The following parameters have multiple conflicting values:
-        = h [*@node.errors.on(:classParameters)].join(", ")
+        = h [*@node.errors.on(:classParameters).map { |error| error.gsub(%r{^.*/}, "")}].join(", ")
     %table.inspector
       %thead
         %tr 

@@ -59,6 +59,9 @@ class NodesController < InheritedResources::Base
     rescue ParameterConflictError => e
       raise e unless request.format == :yaml
       render :text => "Node \"#{resource.name}\" has conflicting parameter(s): #{resource.errors.on(:parameters).to_a.to_sentence}", :content_type => 'text/plain', :status => 500
+   rescue ClassParameterConflictError => e
+        raise e unless request.format == :yaml
+        render :text => "Node \"#{resource.name}\" has conflicting class parameter(s): #{resource.errors.on(:classParameters).to_a.to_sentence}", :content_type => 'text/plain', :status => 500
     rescue NodeClassificationDisabledError => e
       render :text => "Node classification has been disabled", :content_type => 'text/plain', :status => 403
     end
