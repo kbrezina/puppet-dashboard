@@ -157,9 +157,16 @@ describe Node do
       @node.configuration.keys.sort.should == ['classes', 'name', 'parameters']
     end
 
-    it "should return the names of the node's classes in the returned class list" do
+#This does not seem to work any more
+#    it "should return the names of the node's classes in the returned class list" do
+#      @node.node_classes = @classes = Array.new(3) { NodeClass.generate! }
+#      @node.configuration['classes'].sort.should == @classes.collect(&:name).sort
+#    end
+
+    #This is a new version of the former test
+    it "should return the names of the node's classes in the keys of the returned class list" do
       @node.node_classes = @classes = Array.new(3) { NodeClass.generate! }
-      @node.configuration['classes'].sort.should == @classes.collect(&:name).sort
+      @node.configuration['classes'].keys.sort.should == @classes.collect(&:name).sort
     end
 
     it "should return the node's compiled parameters in the returned parameters list" do
