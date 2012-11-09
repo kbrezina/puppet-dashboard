@@ -11,3 +11,8 @@
       %button Update
       or go to
       = link_to @node_group.name, node_group_path(@node_group)
+
+    - if @conflicts
+      %script{:type => 'text/javascript'}
+        alert("A conflict was found")
+        window.location = "#{url_for(@resource)}"
