@@ -12,7 +12,8 @@
       or go to
       = link_to @node_group.name, node_group_path(@node_group)
 
-    - if @conflicts
+    - if @conflict_message
       %script{:type => 'text/javascript'}
-        alert("A conflict was found")
+        - p @conflict_message
+        alert("#{@conflict_message}")
         window.location = "#{url_for(@resource)}"
