@@ -62,8 +62,9 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
     end
   end
 
+  private
+
   def force_update?
-    #@_params
-    false
+    !params["force_update"].nil? && params["force_update"] == "true"
   end
 end
