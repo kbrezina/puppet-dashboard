@@ -1,5 +1,5 @@
 - parameter = parameter_input  # change silly partial-based variable name
-- parameter_index = defined?(parameter_input_counter) ? parameter_input_counter : 0
+- parameter_index = defined?(parameter_input_counter) ? (parameter_input_counter+1) : 0
 - object_name = params[:controller].singularize
 %tr
   %td.key
