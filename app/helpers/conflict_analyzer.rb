@@ -16,10 +16,6 @@ module ConflictAnalyzer
 
   def get_new_conflicts(old_conflicts)
     current_conflicts = get_all_current_conflicts
-puts "OLD CONFLICTS:"
-p old_conflicts
-puts "CURRENT CONFLICTS:"
-p current_conflicts
     new_conflicts = {}
     current_conflicts.keys.each do |group_name|
       if !old_conflicts.keys.member?(group_name)
@@ -67,8 +63,6 @@ p current_conflicts
       end
     end
 
-puts "NEW CONFLICTS:"
-p new_conflicts
     new_conflicts
   end
 end
