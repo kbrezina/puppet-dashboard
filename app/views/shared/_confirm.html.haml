@@ -2,6 +2,6 @@
 #popupId.popupWindow
   = message
   .element.actions
-    %button Update
+    %button{:onclick => "event.preventDefault(); $('force_update').value = 'true'; $('submit_button').click();"} Update 
     or go to
-    = link_to_function 'Cancel', 'document.getElementById(\'glassId\').style.display=\'none\';document.getElementById(\'popupId\').style.display=\'none\';'
+    = link_to_function 'Cancel', "$('glassId').style.display='none';$('popupId').style.display='none';"
