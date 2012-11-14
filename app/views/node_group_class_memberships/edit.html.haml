@@ -6,6 +6,7 @@
   - @node_group = NodeGroup.find_by_id(@node_group_id)
 
   - remote_form_for @node_group_class_membership, :url => url_for(@node_group_class_membership), :success => "form_submit_success(request)", :failure => "alert(\'Oops!! An error occurred.\')", :html => {:id => "param_form"} do |f|
+    #response{:style => "display: none;"}
     = render f
     .element.actions
       %button Update
@@ -25,7 +26,9 @@
     window.location = jsonResponse.redirect_to;
     }
     else {
-    alert(JSON.stringify(jsonResponse.confirm_html));
+    errorMessagesElement = document.getElementById("response");
+    errorMessagesElement.style.display = "block";
+    errorMessagesElement.innerHTML = jsonResponse.confirm_html;
     }
     }
     }
