@@ -18,9 +18,14 @@
     if(jsonResponse.status == "error") {
     errorMessagesElement = document.getElementById("error_messages");
     errorMessagesElement.style.display = "block";
-    errorMessagesElement.innerHTML = jsonResponse.message;
+    errorMessagesElement.innerHTML = jsonResponse.error_html;
     }
     else {
-    alert(JSON.stringify(jsonResponse));
+    if(jsonResponse.valid == "true") {
+    window.location = jsonResponse.redirect_to;
+    }
+    else {
+    alert(JSON.stringify(jsonResponse.confirm_html));
+    }
     }
     }

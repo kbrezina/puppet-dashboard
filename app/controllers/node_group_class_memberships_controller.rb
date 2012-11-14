@@ -46,7 +46,8 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
                 end
               end
 
-              render :json => { :status => "ok", :valid => "false", :message => conflict_message }, :content_type => 'application/json'
+              html = render_to_string(:template => "shared/_confirm", :layout => false, :locals => { :message => conflict_message })
+              render :json => { :status => "ok", :valid => "false", :confirm_html => html }, :content_type => 'application/json'
               raise ActiveRecord::Rollback
             end
           end
@@ -55,8 +56,8 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
         };
 
         failure.html {
-          message = render_to_string(:action => "_error", :layout => false)
-          render :json => { :status => "error", :message => message }, :content_type => 'application/json'
+          html = render_to_string(:action => "_error", :layout => false)
+          render :json => { :status => "error", :error_html => html }, :content_type => 'application/json'
         }
       end
     end
