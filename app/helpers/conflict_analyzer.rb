@@ -16,6 +16,10 @@ module ConflictAnalyzer
 
   def get_new_conflicts(old_conflicts)
     current_conflicts = get_all_current_conflicts
+puts "OLD CONFLICTS:"
+p old_conflicts
+puts "CURRENT CONFLICTS:"
+p current_conflicts
     new_conflicts = {}
     current_conflicts.keys.each do |group_name|
       if !old_conflicts.keys.member?(group_name)
@@ -36,10 +40,24 @@ module ConflictAnalyzer
         old_class_conflicts = old_conflicts[group_name].class_conflicts;
         current_class_conflicts = current_conflicts[group_name].class_conflicts;
         new_class_conflicts = {}
-        current_class_conflicts.keys.each do |class_name|
-          if !(old_class_conflicts.include?(class_name) &&
-              old_class_conflicts[class_name] == current_class_conflicts[class_name])
-             new_class_conflicts[class_name] = current_class_conflicts[class_name]
+        current_class_conflicts.keys.each do |clazz|
+          if !(old_class_conflicts.include?(clazz))
+            new_class_conflicts[clazz] = current_class_conflicts[clazz]
+          else
+            new_class_conflicts[clazz] = current_class_conflicts[clazz].select { |current|
+              existed = false
+              old_class_conflicts[clazz].each do |old|
+                if old.name == current.name && old.sources = current.sources
+                  existed = true
+                  break
+                end
+              end
+              
+              !existed
+            }
+          end
+          if new_class_conflicts[clazz].length == 0
+            new_class_conflicts.delete(clazz)
           end
         end
 
@@ -49,6 +67,8 @@ module ConflictAnalyzer
       end
     end
 
+puts "NEW CONFLICTS:"
+p new_conflicts
     new_conflicts
   end
 end
