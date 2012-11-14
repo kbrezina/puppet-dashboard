@@ -1,0 +1,7 @@
+#glassId.popupWindowGlass
+#popupId.popupWindow
+  = message
+  .element.actions
+    %button Update
+    or go to
+    = link_to_function 'Cancel', 'document.getElementById(\'glassId\').style.display=\'none\';document.getElementById(\'popupId\').style.display=\'none\';'
