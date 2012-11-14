@@ -1,7 +1,0 @@
-#glassId.popupWindowGlass
-#popupId.popupWindow
-  = message
-  .element.actions
-    %button{:onclick => "event.preventDefault(); $('force_update').value = 'true'; $('submit_button').click();"} Update 
-    or go to
-    = link_to_function 'Cancel', "$('glassId').style.display='none';$('popupId').style.display='none';"

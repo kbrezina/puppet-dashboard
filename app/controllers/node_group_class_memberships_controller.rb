@@ -46,7 +46,7 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
                 end
               end
 
-              html = render_to_string(:template => "shared/_confirm", :layout => false, :locals => { :message => conflict_message })
+              html = render_to_string(:template => "node_group_class_memberships/_confirm", :layout => false, :locals => { :message => conflict_message })
               render :json => { :status => "ok", :valid => "false", :confirm_html => html }, :content_type => 'application/json'
               raise ActiveRecord::Rollback
             end
