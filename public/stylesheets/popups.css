@@ -1,7 +1,4 @@
-.popupWindowGlass {
-  background-color: #FFFFFF;
-  opacity: 0.4;
-  z-index: 1;
+#popupWindowGlass, #popupWindowLayoutHelperTable {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -9,10 +6,32 @@
   right: 0;
 }
 
-.popupWindow {
-  z-index: 2;
-  position: absolute;
-  top: 100px;
-  left: 100px;
+#popupWindowGlass {
+  background-color: #fff;
+  opacity: 0.4;
+}
+
+#popupWindowLayoutHelperTable {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+#popupWindowLayoutHelperTableCell {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#popupWindow {
   background-color: white;
+  display: inline-block;
+  padding: 20px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  text-align: left;
+}
+
+#popupWindowButtons {
+  margin-top: 20px;
 }

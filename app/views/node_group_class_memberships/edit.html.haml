@@ -26,8 +26,13 @@
     window.location = jsonResponse.redirect_to;
     }
     else {
-    confirmElement = document.createDiv();
-    document.getBodyElement().appendChild(confirmElement);
+    confirmElement = document.createElement('div');
+    confirmElement.style.position = 'absolute';
+    confirmElement.style.top = '0px';
+    confirmElement.style.right  = '0px';
+    confirmElement.style.bottom = '0px';
+    confirmElement.style.left = '0px';
+    document.getElementsByTagName('body')[0].appendChild(confirmElement);
     confirmElement.innerHTML = jsonResponse.confirm_html;
     }
     }
