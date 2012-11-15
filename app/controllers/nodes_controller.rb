@@ -85,9 +85,9 @@ class NodesController < InheritedResources::Base
  
       update! do |success, failure|
         success.html {
+          node = Node.find_by_id(params[:id])
  
           unless(force_update?)
-            node = Node.find_by_id(params[:id])
  
             new_conflicts_message = get_new_conflicts_message(old_conflicts)
             unless new_conflicts_message.nil?
@@ -99,14 +99,16 @@ class NodesController < InheritedResources::Base
             end
           end
  
-          render :json => { :status => "ok", :valid => "true", :redirect_to => url_for(@node) }, :content_type => 'application/json'
+          render :json => { :status => "ok", :valid => "true", :redirect_to => url_for(node) }, :content_type => 'application/json'
         };
  
         failure.html {
-          set_group_and_class_autocomplete_data_sources(@node)
+          node = Node.find_by_id(params[:id])
+
+          set_group_and_class_autocomplete_data_sources(node)
           html = render_to_string(:template => "shared/_error",
                                   :layout => false,
-                                  :locals => { :object_name => 'node', :object => @node })
+                                  :locals => { :object_name => 'node', :object => node })
           render :json => { :status => "error", :error_html => html }, :content_type => 'application/json'
         }
       end

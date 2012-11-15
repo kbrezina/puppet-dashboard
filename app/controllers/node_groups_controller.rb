@@ -39,9 +39,9 @@ class NodeGroupsController < InheritedResources::Base
  
       update! do |success, failure|
         success.html {
+          node_group = NodeGroup.find_by_id(params[:id])
  
           unless(force_update?)
-            node_group = NodeGroup.find_by_id(params[:id])
  
             new_conflicts_message = get_new_conflicts_message(old_conflicts)
             unless new_conflicts_message.nil?
@@ -53,15 +53,17 @@ class NodeGroupsController < InheritedResources::Base
             end
           end
  
-          render :json => { :status => "ok", :valid => "true", :redirect_to => url_for(@node_group) }, :content_type => 'application/json'
+          render :json => { :status => "ok", :valid => "true", :redirect_to => url_for(node_group) }, :content_type => 'application/json'
         };
  
         failure.html {
-          set_node_autocomplete_data_sources(@node_group)
-          set_group_and_class_autocomplete_data_sources(@node_group)
+          node_group = NodeGroup.find_by_id(params[:id])
+
+          set_node_autocomplete_data_sources(node_group)
+          set_group_and_class_autocomplete_data_sources(node_group)
           html = render_to_string(:template => "shared/_error",
                                   :layout => false,
-                                  :locals => { :object_name => 'node_group', :object => @node_group })
+                                  :locals => { :object_name => 'node_group', :object => node_group })
           render :json => { :status => "error", :error_html => html }, :content_type => 'application/json'
         }
       end
