@@ -19,36 +19,11 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
 
             @node_group_class_membership = membership
 
-            new_conflicts = get_new_conflicts(old_conflicts)
-            if new_conflicts.length > 0
-              conflict_message = "You have introduced new conflicts!\\n"
-              new_conflicts.keys.each do |group_name|
-                conflict_message = conflict_message + "\\nGroup: " + group_name
-                conflicts = new_conflicts[group_name]
-                if conflicts.global_conflicts.length > 0
-                  conflict_message += "\\n  Global conflicts:\\n"
-                  conflict.global_conflicts.each do |conflict|
-                    conflict_message += "    " + conflict.name + " (" + conflict.value + "): " +
-                      conflict.sources.map{ |source| source.name}.join(",")
-                  end
-                  conflict_message += "\\n"
-                end
-                if conflicts.class_conflicts.length > 0
-                  conflict_message += "\\n  Class conflicts:\\n"
-                  conflicts.class_conflicts.keys.each do |node_class|
-                    conflict_message += "    " + node_class.name + ": "
-                    conflicts.class_conflicts[node_class].each do |conflict|
-                      conflict_message += conflict.name + " (" + conflict.value + ") - " +
-                        conflict.sources.map{ |source| source.name}.join(",")
-                    end
-                  end
-                  conflict_message += "\\n"
-                end
-              end
-
+            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",
                                       :layout => false,
-                                      :locals => { :message => conflict_message, :confirm_label => "Update", :on_confirm_clicked_script => "event.preventDefault(); $('force_update').value = 'true'; $('submit_button').click();" })
+                                      :locals => { :message => new_conflicts_message, :confirm_label => "Update", :on_confirm_clicked_script => "$('force_update').value = 'true'; $('submit_button').click();" })
               render :json => { :status => "ok", :valid => "false", :confirm_html => html }, :content_type => 'application/json'
               raise ActiveRecord::Rollback
             end

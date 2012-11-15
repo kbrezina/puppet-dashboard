@@ -10,8 +10,42 @@ module ConflictAnalyzer
       conflicts[nodegroup.name] = OpenStruct.new :global_conflicts => nodegroup.global_conflicts.nil? ? [] : nodegroup.global_conflicts,
         :class_conflicts => nodegroup.class_conflicts.nil? ? {} : nodegroup.class_conflicts
     end
-    
+
     conflicts
+  end
+
+  def get_new_conflicts_message(old_conflicts)
+    new_conflicts = get_new_conflicts(old_conflicts)
+    if new_conflicts.length > 0
+      conflict_message = "You have introduced new conflicts!\\n"
+      new_conflicts.keys.each do |group_name|
+        conflict_message = conflict_message + "\\nGroup: " + group_name
+        conflicts = new_conflicts[group_name]
+        if conflicts.global_conflicts.length > 0
+          conflict_message += "\\n  Global conflicts:\\n"
+          conflict.global_conflicts.each do |conflict|
+            conflict_message += "    " + conflict.name + " (" + conflict.value + "): " +
+              conflict.sources.map{ |source| source.name}.join(",")
+          end
+          conflict_message += "\\n"
+        end
+        if conflicts.class_conflicts.length > 0
+          conflict_message += "\\n  Class conflicts:\\n"
+          conflicts.class_conflicts.keys.each do |node_class|
+            conflict_message += "    " + node_class.name + ": "
+            conflicts.class_conflicts[node_class].each do |conflict|
+              conflict_message += conflict.name + " (" + conflict.value + ") - " +
+                conflict.sources.map{ |source| source.name}.join(",")
+            end
+          end
+          conflict_message += "\\n"
+        end
+      end
+    else
+      conflict_message = nil;
+    end
+
+    conflict_message;
   end
 
   def get_new_conflicts(old_conflicts)
@@ -29,7 +63,7 @@ module ConflictAnalyzer
               break
             end
           end
-          
+
           !existed
         }
 
@@ -48,7 +82,7 @@ module ConflictAnalyzer
                   break
                 end
               end
-              
+
               !existed
             }
           end
