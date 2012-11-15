@@ -46,7 +46,9 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
                 end
               end
 
-              html = render_to_string(:template => "node_group_class_memberships/_confirm", :layout => false, :locals => { :message => conflict_message })
+              html = render_to_string(:template => "shared/_confirm",
+                                      :layout => false,
+                                      :locals => { :message => conflict_message, :confirm_label => "Update", :on_confirm_clicked_script => "event.preventDefault(); $('force_update').value = 'true'; $('submit_button').click();" })
               render :json => { :status => "ok", :valid => "false", :confirm_html => html }, :content_type => 'application/json'
               raise ActiveRecord::Rollback
             end
@@ -56,7 +58,9 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
         };
 
         failure.html {
-          html = render_to_string(:action => "_error", :layout => false)
+          html = render_to_string(:template => "shared/_error",
+                                  :layout => false,
+                                  :locals => { :object_name => 'node_group_class_membership', :object => @node_group_class_membership })
           render :json => { :status => "error", :error_html => html }, :content_type => 'application/json'
         }
       end
