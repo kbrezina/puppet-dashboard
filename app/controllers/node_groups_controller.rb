@@ -70,9 +70,29 @@ class NodeGroupsController < InheritedResources::Base
     end
   end
 
-  private
+  def destroy
+    ActiveRecord::Base.transaction do
+      old_conflicts = get_all_current_conflicts
 
-  def force_update?
-    !params[:force_update].nil? && params[:force_update] == "true"
+      destroy! do |_, format| # only one format is used for destroy (success/failure is not recognized)
+                              # TODO recognize and report failed delete
+        format.html {
+
+          unless(force_delete?)
+            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+
+            unless new_conflicts_message.nil?
+              html = render_to_string(:template => "shared/_confirm",
+                                      :layout => false,
+                                      :locals => { :message => new_conflicts_message, :confirm_label => "Delete", :on_confirm_clicked_script => "eval($('delete_button').getAttribute('onclick').replace('?force_delete=false', '?force_delete=true').replace('return false;', '').replace('confirm(\\'Are you sure?\\')', 'true'));" })
+              render :json => { :status => "ok", :valid => "false", :confirm_html => html }, :content_type => 'application/json'
+              raise ActiveRecord::Rollback
+            end
+          end
+
+          render :json => { :status => "ok", :valid => "true", :redirect_to => node_groups_path }, :content_type => 'application/json'
+        }
+      end
+    end
   end
 end
