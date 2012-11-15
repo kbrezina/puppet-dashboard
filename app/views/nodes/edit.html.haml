@@ -5,6 +5,6 @@
     %input{:id => "force_update", :name => "force_update", :type => "hidden", :value => "false"}
     = render f
     .element.actions
-      %button{:id => "submit_button"} Save changes
+      %button{:id => "submit_button"} Update
       or
       = link_to 'Cancel', node_path(params[:id])

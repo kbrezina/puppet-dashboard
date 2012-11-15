@@ -74,4 +74,13 @@ class ApplicationController < ActionController::Base
       :objects     => source_object.node_groups
     }
   end
+
+  def force_update?
+    !params[:force_update].nil? && params[:force_update] == "true"
+  end
+
+  def force_delete?
+    !params[:force_delete].nil? && params[:force_delete] == "true"
+  end
+
 end
