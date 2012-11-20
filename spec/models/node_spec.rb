@@ -171,8 +171,8 @@ describe Node do
 
     it "should return the node's compiled parameters in the returned parameters list" do
       @node.stubs(:compiled_parameters).returns [
-        OpenStruct.new(:name => 'a', :value => 'b', :sources => Set[:foo]),
-        OpenStruct.new(:name => 'c', :value => 'd', :sources => Set[:bar])
+        { :name => 'a', :value => 'b', :sources => Set[:foo] },
+        { :name => 'c', :value => 'd', :sources => Set[:bar] }
       ]
       @node.configuration['parameters'].should == { 'a' => 'b', 'c' => 'd' }
     end
@@ -183,23 +183,23 @@ describe Node do
 
     it "should create parameter objects for new parameters" do
       lambda {
-        @node.parameter_attributes = [{:key => :key, :value => :value}]
+        @node.parameter_attributes = {"1" => {:key => :key, :value => :value}}
         @node.save
       }.should change(Parameter, :count).by(1)
     end
 
     it "should create and destroy parameters based on updated parameters" do
-      @node.parameter_attributes = [{:key => :key1, :value => :value1}]
+      @node.parameter_attributes = {"1" => {:key => :key1, :value => :value1}}
       lambda {
-        @node.parameter_attributes = [{:key => :key2, :value => :value2}]
+        @node.parameter_attributes = {"1" => {:key => :key2, :value => :value2}}
         @node.save
       }.should_not change(Parameter, :count)
     end
 
     it "should create timeline events for creation and destruction" do
-      @node.parameter_attributes = [{:key => :key1, :value => :value1}]
+      @node.parameter_attributes = {"1" => {:key => :key1, :value => :value1}}
       lambda {
-        @node.parameter_attributes = [{:key => :key2, :value => :value2}]
+        @node.parameter_attributes = {"1" => {:key => :key2, :value => :value2}}
         @node.save
       }.should change(TimelineEvent, :count).by_at_least(2)
     end
@@ -331,8 +331,8 @@ describe Node do
 
       it "should return the compiled parameters" do
         @node.compiled_parameters.should == [
-          OpenStruct.new(:name => 'foo', :value => '1', :sources => Set[@node_group_a]),
-          OpenStruct.new(:name => 'bar', :value => '2', :sources => Set[@node_group_b])
+          { :name => 'foo', :value => '1', :sources => Set[@node_group_a] },
+          { :name => 'bar', :value => '2', :sources => Set[@node_group_b]  }
         ]
       end
 
@@ -342,8 +342,8 @@ describe Node do
         @node_group_a.node_groups << @node_group_a1
 
         @node.compiled_parameters.should == [
-          OpenStruct.new(:name => 'foo', :value => '1', :sources => Set[@node_group_a]),
-          OpenStruct.new(:name => 'bar', :value => '2', :sources => Set[@node_group_b])
+          { :name => 'foo', :value => '1', :sources => Set[@node_group_a] },
+          { :name => 'bar', :value => '2', :sources => Set[@node_group_b] }
         ]
       end
 
@@ -377,8 +377,8 @@ describe Node do
       it "should include parameters of the node itself" do
         @node.parameters << Parameter.create(:key => "node_parameter", :value => "exist")
 
-        @node.compiled_parameters.first.name.should == "node_parameter"
-        @node.compiled_parameters.first.value.should == "exist"
+        @node.compiled_parameters.first[:name].should == "node_parameter"
+        @node.compiled_parameters.first[:value].should == "exist"
       end
 
       it "should retain the history of its parameters" do
@@ -390,8 +390,8 @@ describe Node do
         @node_group_a.node_groups << @node_group_d
 
         @node.compiled_parameters.should == [
-          OpenStruct.new(:name => 'foo', :value => '1', :sources => Set[@node_group_a]),
-          OpenStruct.new(:name => 'bar', :value => '2', :sources => Set[@node_group_b])
+          { :name => 'foo', :value => '1', :sources => Set[@node_group_a] },
+          { :name => 'bar', :value => '2', :sources => Set[@node_group_b] }
         ]
       end
     end
