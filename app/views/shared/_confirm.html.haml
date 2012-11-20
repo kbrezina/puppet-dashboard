@@ -7,5 +7,5 @@
       #popupWindowButtons
         %button{:onclick => on_confirm_clicked_script}
           = confirm_label
-        or go to
+        or
         = link_to_function 'Cancel', "$('popupWindowGlass').parentNode.parentNode.removeChild($('popupWindowGlass').parentNode);"
