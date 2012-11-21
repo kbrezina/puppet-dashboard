@@ -16,9 +16,9 @@ describe NodeGroupsController do
       assigns[:node_group].name.should == 'foo'
     end
 
-    it "should render new when creation fails" do
+    it "should render error when creation fails" do
       post :create, 'node_group' => { }
-      response.should render_template('node_groups/new')
+      response.should render_template('shared/_error.html.haml')
       response.should be_success
 
       assigns[:node_group].errors.full_messages.should == ["Name can't be blank"]

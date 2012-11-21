@@ -153,9 +153,9 @@ describe NodesController do
       assigns[:node].name.should == 'foo'
     end
 
-    it "should render new when creation fails" do
+    it "should render error when creation fails" do
       post :create, 'node' => { }
-      response.should render_template('nodes/new')
+      response.should render_template('shared/_error.html.haml')
       response.should be_success
 
       assigns[:node].errors.full_messages.should == ["Name can't be blank"]
@@ -323,9 +323,9 @@ describe NodesController do
           assigns[:node].errors[:name].should_not be_blank
         end
 
-        it 'should render the update action' do
+        it 'should render error' do
           do_put
-          response.should render_template('edit')
+          response.should render_template('shared/_error.html.haml')
         end
       end
 
