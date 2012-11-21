@@ -26,11 +26,37 @@ class NodesController < InheritedResources::Base
   end
 
   def create
-    create! do |success, failure|
-      failure.html {
-        set_group_and_class_autocomplete_data_sources(@node)
-        render :new
-      }
+puts "Create called!"
+    ActiveRecord::Base.transaction do
+      old_conflicts = get_all_current_conflicts
+ 
+      create! do |success, failure|
+        success.html {
+          node = Node.find_by_name(params[:name])
+ 
+          unless(force_create?)
+ 
+            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            unless new_conflicts_message.nil?
+              html = render_to_string(:template => "shared/_confirm",
+                                      :layout => false,
+                                      :locals => { :message => new_conflicts_message, :confirm_label => "Create", :on_confirm_clicked_script => "$('force_create').value = 'true'; $('submit_button').click();" })
+              render :json => { :status => "ok", :valid => "false", :confirm_html => html }, :content_type => 'application/json'
+              raise ActiveRecord::Rollback
+            end
+          end
+ 
+          render :json => { :status => "ok", :valid => "true", :redirect_to => url_for(node) }, :content_type => 'application/json'
+        };
+ 
+        failure.html {
+          set_group_and_class_autocomplete_data_sources(@node)
+          html = render_to_string(:template => "shared/_error",
+                                  :layout => false,
+                                  :locals => { :object_name => 'node', :object => @node })
+          render :json => { :status => "error", :error_html => html }, :content_type => 'application/json'
+        }
+      end
     end
   end
 
