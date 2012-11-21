@@ -26,7 +26,6 @@ class NodesController < InheritedResources::Base
   end
 
   def create
-puts "Create called!"
     ActiveRecord::Base.transaction do
       old_conflicts = get_all_current_conflicts
  
