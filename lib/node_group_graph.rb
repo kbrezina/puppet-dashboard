@@ -82,7 +82,7 @@ module NodeGroupGraph
         # Resolve all conflicts resolved by the node/group itself
         conflicts.delete_if {|key| params[key]}
 
-        { :parameters => params.reverse_merge(inherited).values, :conflicts => conflicts }
+        { :parameters => params.reverse_merge(inherited).values.sort{|a,b| a[:name] <=> b[:name]}, :conflicts => conflicts.sort }
       end
 
       compiled_parameters[:conflicts].each { |key| errors.add(:classParameters, class_membership.node_class.name + "/" + key) }
@@ -151,7 +151,7 @@ module NodeGroupGraph
 
         resolved_class_params = {}
         merged_parent_class_params.each do |node_class, params|
-          resolved_class_params[node_class] = params.values
+          resolved_class_params[node_class] = params.values.sort{|a,b| a[:name] <=> b[:name]}
         end
 
         resolved_class_params
@@ -253,7 +253,7 @@ module NodeGroupGraph
         # Resolve all conflicts resolved by the node/group itself
         conflicts.delete_if {|key| params[key]}
 
-        { :parameters => params.reverse_merge(inherited).values, :conflicts => conflicts }
+        { :parameters => params.reverse_merge(inherited).values.sort{|a,b| a[:name] <=> b[:name]}, :conflicts => conflicts.sort }
       end
       @compiled_parameters[:conflicts].each { |key| errors.add(:parameters,key) }
     end
