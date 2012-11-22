@@ -400,14 +400,15 @@ describe NodesController do
 
         do_put
 
-        response.should redirect_to(node_path(@node))
+        response.code.should == '200'
+        response.body.should =~ /\{"status":"ok","redirect_to":"[^"]+#{node_path(@node)}","valid":"true"\}/
         @node.node_groups.should == [node_group]
       end
 
       it "should succeed if parameter_attributes and node classes are omitted" do
         do_put
-
-        response.should be_redirect
+        response.code.should == '200'
+        response.body.should =~ /\{"status":"ok","redirect_to":"[^"]+","valid":"true"\}/
       end
     end
   end

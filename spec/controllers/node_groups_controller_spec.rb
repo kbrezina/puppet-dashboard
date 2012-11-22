@@ -119,8 +119,8 @@ describe NodeGroupsController do
 
       it "should succeed if parameter_attributes and node classes are omitted" do
         do_put
-
-        response.should be_redirect
+        response.code.should == '200'
+        response.body.should =~ /\{"status":"ok","redirect_to":"[^"]+","valid":"true"\}/
       end
     end
   end
