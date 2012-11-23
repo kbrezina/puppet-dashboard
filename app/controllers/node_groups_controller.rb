@@ -16,15 +16,19 @@ class NodeGroupsController < InheritedResources::Base
 
   def create
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
- 
+      related_resources = []
+        params[:node_group][:assigned_node_ids].split(/,/).each do |resource_id|
+        related_resources << Node.find_by_id(resource_id)
+      end
+      old_conflicts = force_create? ? nil : get_current_conflicts(nil, related_resources)
+
       create! do |success, failure|
         success.html {
-          node_group = NodeGroup.find_by_name(params[:name])
- 
+          node_group = NodeGroup.find_by_name(params[:node_group][:name])
+
           unless(force_create?)
- 
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, node_group)
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",
                                       :layout => false,
@@ -33,10 +37,10 @@ class NodeGroupsController < InheritedResources::Base
               raise ActiveRecord::Rollback
             end
           end
- 
+
           render :json => { :status => "ok", :valid => "true", :redirect_to => url_for(node_group) }, :content_type => 'application/json'
         };
- 
+
         failure.html {
           set_node_autocomplete_data_sources(@node_group)
           set_group_and_class_autocomplete_data_sources(@node_group)
@@ -60,7 +64,7 @@ class NodeGroupsController < InheritedResources::Base
 
   def update
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
+      old_conflicts = force_update? ? nil : get_current_conflicts(NodeGroup.find_by_id(params[:id]))
  
       update! do |success, failure|
         success.html {
@@ -68,7 +72,7 @@ class NodeGroupsController < InheritedResources::Base
  
           unless(force_update?)
  
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, node_group)
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",
                                       :layout => false,
@@ -97,14 +101,15 @@ class NodeGroupsController < InheritedResources::Base
 
   def destroy
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
+      old_conflicts = force_delete? ? nil : get_current_conflicts(NodeGroup.find_by_id(params[:id]))
 
       destroy! do |_, format| # only one format is used for destroy (success/failure is not recognized)
                               # TODO recognize and report failed delete
         format.html {
 
           unless(force_delete?)
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            node_group = NodeGroup.find_by_id(params[:id])
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, node_group)
 
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",

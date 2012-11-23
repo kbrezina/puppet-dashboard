@@ -8,14 +8,14 @@ class NodeClassMembershipsController < InheritedResources::Base
 
   def update
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
+      old_conflicts = get_current_conflicts(NodeClassMembership.find_by_id(params[:id]).node)
 
       update! do |success, failure|
         success.html {
           membership = NodeClassMembership.find_by_id(params[:id])
 
           unless(force_update?)
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, membership.node)
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",
                                       :layout => false,
@@ -43,14 +43,17 @@ class NodeClassMembershipsController < InheritedResources::Base
     membership_node = NodeClassMembership.find_by_id(params[:id]).node
 
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
+      old_conflicts = get_current_conflicts(membership_node)
 
       destroy! do |_, format| # only one format is used for destroy (success/failure is not recognized)
                               # TODO recognize and report failed delete
+
+        membership_node = Node.find_by_id(membership_node.id)
+
         format.html {
 
           unless(force_delete?)
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, membership_node)
 
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",

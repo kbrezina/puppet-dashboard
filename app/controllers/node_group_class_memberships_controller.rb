@@ -8,14 +8,14 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
 
   def update
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
+      old_conflicts = get_current_conflicts(NodeGroupClassMembership.find_by_id(params[:id]).node_group)
 
       update! do |success, failure|
         success.html {
           membership = NodeGroupClassMembership.find_by_id(params[:id])
 
           unless(force_update?)
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, membership.node_group)
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",
                                       :layout => false,
@@ -40,17 +40,18 @@ class NodeGroupClassMembershipsController < InheritedResources::Base
   end
 
   def destroy
-    membership_node_group = NodeGroupClassMembership.find_by_id(params[:id]).node_group
-
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
+      membership_node_group = NodeGroupClassMembership.find_by_id(params[:id]).node_group
+      old_conflicts = force_delete? ? nil : get_current_conflicts(membership_node_group)
 
       destroy! do |_, format| # only one format is used for destroy (success/failure is not recognized)
                               # TODO recognize and report failed delete
         format.html {
 
+          membership_node_group = NodeGroup.find_by_id(membership_node_group.id)
+
           unless(force_delete?)
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, membership_node_group)
 
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",

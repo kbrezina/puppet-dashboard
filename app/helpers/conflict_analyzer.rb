@@ -1,16 +1,43 @@
 require 'ostruct'
-#require 'app/models/node_group'
 
 module ConflictAnalyzer
-  def get_all_current_conflicts
+  class EntityDescriptor
+    attr_reader :entity_class, :entity_name
+
+    def initialize(entity_class, entity_name)
+      @entity_class = entity_class
+      @entity_name = entity_name
+    end
+
+    def eql?(other)
+      other.is_a?(EntityDescriptor) && other.entity_class == @entity_class && other.entity_name == @entity_name
+    end
+
+    def hash
+      @entity_name.hash
+    end
+
+    def ==(other)
+      eql?(other)
+    end
+  end
+
+  def get_current_conflicts(initial_resource, related_resources = [])
     conflicts = {}
 
-    NodeGroup.find(:all).each do |nodegroup|
-      global_conflicts = nodegroup.global_conflicts.nil? ? [] : nodegroup.global_conflicts
-      class_conflicts = nodegroup.class_conflicts.nil? ? {} : nodegroup.class_conflicts
+    affected_entities = initial_resource.nil? ? [] : [initial_resource]
+    if initial_resource.is_a?(NodeGroup)
+      affected_entities += initial_resource.node_group_children
+      affected_entities += initial_resource.nodes
+    end
+    affected_entities += related_resources 
+
+    affected_entities.each do |entity|
+      global_conflicts = entity.global_conflicts.nil? ? [] : entity.global_conflicts
+      class_conflicts = entity.class_conflicts.nil? ? {} : entity.class_conflicts
 
       if global_conflicts.length > 0 || class_conflicts.length > 0
-        conflicts[nodegroup.name] = {
+        conflicts[EntityDescriptor.new(entity.class, entity.name)] = {
           :global_conflicts => global_conflicts,
           :class_conflicts => class_conflicts
         }
@@ -20,16 +47,17 @@ module ConflictAnalyzer
     conflicts
   end
 
-  def get_new_conflicts_message(old_conflicts)
-    new_conflicts = get_new_conflicts(old_conflicts)
+  def get_new_conflicts_message(old_conflicts, initial_resource, related_resources = [])
+    new_conflicts = get_new_conflicts(old_conflicts, initial_resource, related_resources)
     if new_conflicts.length > 0
       conflict_message = "You have introduced new conflicts!\\n"
-      new_conflicts.keys.each do |group_name|
-        conflict_message = conflict_message + "\\nGroup: " + group_name
-        conflicts = new_conflicts[group_name]
+      new_conflicts.keys.each do |entity_desc|
+        entity_class = entity_desc.entity_class == NodeGroup ? "Group" : "Node"
+        conflict_message = conflict_message + "\\n" + entity_class + ": " + entity_desc.entity_name
+        conflicts = new_conflicts[entity_desc]
         if conflicts[:global_conflicts].length > 0
           conflict_message += "\\n  Global conflicts:\\n"
-          conflict[:global_conflicts].each do |conflict|
+          conflicts[:global_conflicts].each do |conflict|
             conflict_message += "    " + conflict[:name] + " (" + conflict[:value] + "): " +
               conflict[:sources].map{ |source| source.name}.join(",")
           end
@@ -54,16 +82,16 @@ module ConflictAnalyzer
     conflict_message;
   end
 
-  def get_new_conflicts(old_conflicts)
-    current_conflicts = get_all_current_conflicts
+  def get_new_conflicts(old_conflicts, initial_resource, related_resources = [])
+    current_conflicts = get_current_conflicts(initial_resource, related_resources)
     new_conflicts = {}
-    current_conflicts.keys.each do |group_name|
-      if !old_conflicts.keys.member?(group_name)
-        new_conflicts[group_name] = current_conflicts[group_name]
+    current_conflicts.keys.each do |entity_desc|
+      if !old_conflicts.keys.include?(entity_desc)
+        new_conflicts[entity_desc] = current_conflicts[entity_desc]
       else
-        new_global_conflicts = current_conflicts[group_name][:global_conflicts].select { |current|
+        new_global_conflicts = current_conflicts[entity_desc][:global_conflicts].select { |current|
           existed = false
-          old_conflicts[group_name][:global_conflicts].each do |old|
+          old_conflicts[entity_desc][:global_conflicts].each do |old|
             if old[:name] == current[:name] && old[:sources] = current[:sources]
               existed = true
               break
@@ -73,8 +101,8 @@ module ConflictAnalyzer
           !existed
         }
 
-        old_class_conflicts = old_conflicts[group_name][:class_conflicts];
-        current_class_conflicts = current_conflicts[group_name][:class_conflicts];
+        old_class_conflicts = old_conflicts[entity_desc][:class_conflicts];
+        current_class_conflicts = current_conflicts[entity_desc][:class_conflicts];
         new_class_conflicts = {}
         current_class_conflicts.keys.each do |clazz|
           if !(old_class_conflicts.include?(clazz))
@@ -98,7 +126,7 @@ module ConflictAnalyzer
         end
 
         if new_global_conflicts.length + new_class_conflicts.length > 0
-          new_conflicts[group_name] = { :global_conflicts => new_global_conflicts, :class_conflicts => new_class_conflicts }
+          new_conflicts[entity_desc] = { :global_conflicts => new_global_conflicts, :class_conflicts => new_class_conflicts }
         end
       end
     end

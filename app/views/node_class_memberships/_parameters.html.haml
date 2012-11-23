@@ -20,9 +20,9 @@
         - @node.compile_class_parameters(resource, true).each do |param|
           %tr
             %td{:style => ("background-color: pink;" if param[:sources].size > 1)}
-              %tt= h param.name
+              %tt= h param[:name]
             %td
-              %tt= h param.value
+              %tt= h param[:value]
             %td
               - if param[:sources] == Set[resource]
                 = h.resource.name

@@ -10,7 +10,7 @@
         - resource.global_conflicts.sort_by{ |param| param[:name] }.each do |param|
           %tr
             %td
-              %tt= h param.name
+              %tt= h param[:name]
             %td
               = param[:sources].sort_by{ |source| source.name }.map{|source| link_to(h(source.name),node_group_path(source.id))}.join(", ")
 

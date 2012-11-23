@@ -27,15 +27,14 @@ class NodesController < InheritedResources::Base
 
   def create
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
- 
+
       create! do |success, failure|
         success.html {
-          node = Node.find_by_name(params[:name])
+          node = Node.find_by_name(params[:node][:name])
  
           unless(force_create?)
  
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+            new_conflicts_message = get_new_conflicts_message({}, node)
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",
                                       :layout => false,
@@ -106,15 +105,15 @@ class NodesController < InheritedResources::Base
 
   def update
     ActiveRecord::Base.transaction do
-      old_conflicts = get_all_current_conflicts
- 
+      old_conflicts = force_update? ? nil : get_current_conflicts(Node.find_by_id(params[:id]))
+
       update! do |success, failure|
         success.html {
           node = Node.find_by_id(params[:id])
- 
+
           unless(force_update?)
- 
-            new_conflicts_message = get_new_conflicts_message(old_conflicts)
+
+            new_conflicts_message = get_new_conflicts_message(old_conflicts, node)
             unless new_conflicts_message.nil?
               html = render_to_string(:template => "shared/_confirm",
                                       :layout => false,
