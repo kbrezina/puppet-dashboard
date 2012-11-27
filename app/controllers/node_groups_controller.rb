@@ -17,8 +17,15 @@ class NodeGroupsController < InheritedResources::Base
   def create
     ActiveRecord::Base.transaction do
       related_resources = []
-        params[:node_group][:assigned_node_ids].split(/,/).each do |resource_id|
-        related_resources << Node.find_by_id(resource_id)
+      node_ids_params = params[:node_group][:assigned_node_ids]
+      unless node_ids_params.nil?
+        node_ids_params.each do |node_ids_param|
+          unless node_ids_param.nil? || node_ids_param.length == 0
+            node_ids_param.split(/,/).each do |resource_id|
+              related_resources << Node.find_by_id(resource_id)
+            end
+          end
+        end
       end
       old_conflicts = force_create? ? nil : get_current_conflicts(nil, related_resources)
 
