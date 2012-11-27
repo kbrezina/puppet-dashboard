@@ -423,63 +423,94 @@ describe NodesController do
       before :each do
         @node_group_a = NodeGroup.generate! :name => "A"
         @node_group_b = NodeGroup.generate! :name => "B"
-
-        @param_1 = Parameter.generate(:key => 'foo', :value => '1')
-        @param_2 = Parameter.generate(:key => 'bar', :value => '2')
-
-        @node_group_a.parameters << @param_1
-        @node_group_b.parameters << @param_2
-
-        @node.node_groups << @node_group_a
-        @node.node_groups << @node_group_b
       end
 
       describe "when global parameters conflicts exists" do
-        it "should render conflicts prompt" do
-          param_3 = Parameter.generate(:key => 'foo', :value => '2')
-          @node_group_b.parameters << param_3
+        before :each do
+          @param_1 = Parameter.generate(:key => 'foo', :value => '1')
+          @param_2 = Parameter.generate(:key => 'foo', :value => '2')
+
+          @node_group_a.parameters << @param_1
+          @node_group_b.parameters << @param_2
+        end
+
+        it "should return JSON containing valid='false'" do
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
           do_put
-          response.should render_template('shared/_conflicts.html.haml')
+
+          response = json_from_response_body
+          response["status"].should == "ok"
+          response["valid"].should == "false"
+        end
+
+        it "should render conflicts prompt" do
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
+          do_put
+
+          response.should render_template('shared/_confirm.html.haml')
+        end
+
+        it "should return JSON containing redirect_to URL when update is forced" do
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
+          @params.merge!({ :force_update => "true" })
+          do_put
+
+          response.code.should == '200'
+          response.body.should =~ /\{"status":"ok","redirect_to":"[^"]+#{node_path(@node)}","valid":"true"\}/
         end
 
         it "should not render conflicts prompt when update is forced" do
-          param_3 = Parameter.generate(:key => 'foo', :value => '2')
-          @node_group_b.parameters << param_3
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
           @params.merge!({ :force_update => "true" })
           do_put
+
           response.should_not render_template('shared/_confirm.html.haml')
         end
       end
 
       describe "when class parameters conflicts exists" do
         before :each do
-          @node_class_a = NodeClass.generate :name => "a"
-          @node_class_b = NodeClass.generate :name => "b"
-
+          @node_class_a = NodeClass.generate! :name => "class_a"
           @node_group_a.node_classes << @node_class_a
-          @node_group_b.node_classes << @node_class_b
+          @node_group_b.node_classes << @node_class_a
 
           @node_group_a_class_memberships_a = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(@node_group_a.id, @node_class_a.id)
-          @node_group_a_class_memberships_a.parameters << Parameter.generate(:key => 'p1', :value => '1')
-          @node_group_b_class_memberships_b = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(@node_group_b.id, @node_class_b.id)
-          @node_group_b_class_memberships_b.parameters << Parameter.generate(:key => 'p1', :value => '2')
+          @node_group_a_class_memberships_a.parameters << Parameter.generate(:key => 'foo', :value => '1')
+          @node_group_b_class_memberships_a = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(@node_group_b.id, @node_class_a.id)
+          @node_group_b_class_memberships_a.parameters << Parameter.generate(:key => 'foo', :value => '2')
+        end
+
+        it "should return JSON containing valid='false'" do
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
+          do_put
+
+          response = json_from_response_body
+          response["status"].should == "ok"
+          response["valid"].should == "false"
         end
 
         it "should render conflicts prompt" do
-          @node_group_b.node_classes << @node_class_a
-          node_group_b_class_memberships_a = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(@node_group_b.id, @node_class_a.id)
-          node_group_b_class_memberships_a.parameters << Parameter.generate(:key => 'p1', :value => '2')
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
           do_put
+
           response.should render_template('shared/_confirm.html.haml')
         end
 
-        it "should not render conflicts prompt when update is forced" do
-          @node_group_b.node_classes << @node_class_a
-          node_group_b_class_memberships_a = NodeGroupClassMembership.find_by_node_group_id_and_node_class_id(@node_group_b.id, @node_class_a.id)
-          node_group_b_class_memberships_a.parameters << Parameter.generate(:key => 'p1', :value => '2')
+        it "should return JSON containing redirect_to URL when update is forced" do
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
           @params.merge!({ :force_update => "true" })
           do_put
-          response.should_not render_template('shared/_conflicts.html.haml')
+
+          response.code.should == '200'
+          response.body.should =~ /\{"status":"ok","redirect_to":"[^"]+#{node_path(@node)}","valid":"true"\}/
+        end
+
+        it "should not render conflicts prompt when update is forced" do
+          @params[:node].merge!({"assigned_node_group_ids" => ["#{@node_group_a.id},#{@node_group_b.id},"]})
+          @params.merge!({ :force_update => "true" })
+          do_put
+
+          response.should_not render_template('shared/_confirm.html.haml')
         end
       end
     end
