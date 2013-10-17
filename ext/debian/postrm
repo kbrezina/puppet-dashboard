@@ -1,9 +1,16 @@
 #!/bin/sh -e
 
 if [ "$1" = "purge" ]; then
-   if test -d /usr/share/puppet-dashboard; then
-       rm -rf /usr/share/puppet-dashboard
+   if test -d /opt/puppet/share/puppet-dashboard; then
+       rm -rf /opt/puppet/share/puppet-dashboard
+   fi
+   if test -d /var/log/pe-puppet-dashboard; then
+       rm -rf /var/log/pe-puppet-dashboard
+   fi
+   if test -d /var/opt/pe-puppet-dashboard; then
+       rm -rf /var/opt/pe-puppet-dashboard
    fi
 fi
+
 
 #DEBHELPER#

@@ -1,5 +1,6 @@
 #!/bin/sh -e
 
+DBUSER=puppet-dashboard
 # Move a conffile without triggering a dpkg question
 mv_conffile() {
     local OLDCONFFILE="$1"
@@ -14,34 +15,75 @@ mv_conffile() {
 
 case "$1" in
 configure)
-    for item in config/environment.rb public log tmp spool; do
-        chown -R www-data:www-data /usr/share/puppet-dashboard/${item}
-    done
-
-    if [ ! -d /etc/puppet-dashboard ]; then
-        mkdir /etc/puppet-dashboard
+    # Remove the older user if found or rename it
+    if getent passwd pe-puppet-dashboard > /dev/null ; then
+        usermod -l puppet-dashboard pe-puppet-dashboard
     fi
 
-    if [ -f /usr/share/puppet-dashboard/config/database.yml ] && [ ! -e /etc/puppet-dashboard/database.yml ]; then
-        mv_conffile "/usr/share/puppet-dashboard/config/database.yml" "/etc/puppet-dashboard/database.yml"
-    fi
-    
-    if [ -f /usr/share/puppet-dashboard/config/settings.yml ] && [ ! -e /etc/puppet-dashboard/settings.yml ]; then
-        mv_conffile "/usr/share/puppet-dashboard/config/settings.yml" "/etc/puppet-dashboard/settings.yml"
+    if getent group pe-puppet-dashboard > /dev/null ; then
+        groupmod -n puppet-dashboard pe-puppet-dashboard
     fi
 
-    chown -R www-data:www-data /etc/puppet-dashboard
-    chmod -R o-rwx /etc/puppet-dashboard
-    find /etc/puppet-dashboard -type f -exec chmod a-x {} \;
-
-    if [ ! -h /usr/share/puppet-dashboard/config/database.yml ]; then
-        ln -s /etc/puppet-dashboard/database.yml /usr/share/puppet-dashboard/config/database.yml
+    # Make sure the user exists.
+    if ! getent passwd puppet-dashboard > /dev/null; then
+        adduser --system --quiet --home /opt/puppet/share/puppet-dashboard --no-create-home \
+            --shell /bin/false --group --gecos "PE Puppet Dashboard" puppet-dashboard
     fi
-    
-    if [ ! -h /usr/share/puppet-dashboard/config/settings.yml ]; then
-        ln -s /etc/puppet-dashboard/settings.yml /usr/share/puppet-dashboard/config/settings.yml
+
+    # Check the validity of the puppet-dashboard user and group
+    if [ "`id -u puppet-dashboard`" -eq 0 ]; then
+        echo "The puppet-dashboard user must not have uid 0 (root).
+Please fix this and reinstall this package." >&2
+        exit 1
+    fi
+    if [ "`id -g puppet-dashboard`" -eq 0 ]; then
+        echo "The puppet-dashboard system user must not have root as its primary group.
+Please fix this and reinstall this package." >&2
+        exit 1
+    fi
+
+    # Add the apache user to the dashboard group
+    if getent passwd www-data > /dev/null; then
+      usermod -a -G puppet-dashboard www-data
+    fi
+
+    # Setup proper permissions
+    mkdir -p /var/log/pe-puppet-dashboard
+    touch /var/log/pe-puppet-dashboard/production.log
+    chown -R puppet-dashboard:puppet-dashboard /var/log/pe-puppet-dashboard
+    chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/spool
+    chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/tmp
+    chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/public
+    chown -R puppet-dashboard:puppet-dashboard /opt/puppet/share/puppet-dashboard/config/environment.rb
+
+    if [ ! -d /etc/puppetlabs/puppet-dashboard ]; then
+        mkdir /etc/puppetlabs/puppet-dashboard
+    fi
+
+    if [ -f /opt/puppet/share/puppet-dashboard/config/database.yml ] && [ ! -e /etc/puppetlabs/puppet-dashboard/database.yml ]; then
+        mv_conffile "/opt/puppet/share/puppet-dashboard/config/database.yml" "/etc/puppetlabs/puppet-dashboard/database.yml"
+    fi
+
+    if [ -f /opt/puppet/share/puppet-dashboard/config/settings.yml ] && [ ! -e /etc/puppetlabs/puppet-dashboard/settings.yml ]; then
+        mv_conffile "/opt/puppet/share/puppet-dashboard/config/settings.yml" "/etc/puppetlabs/puppet-dashboard/settings.yml"
+    fi
+
+    chown -R puppet-dashboard:puppet-dashboard /etc/puppetlabs/puppet-dashboard
+    chmod -R o-rwx /etc/puppetlabs/puppet-dashboard
+		find /etc/puppetlabs/puppet-dashboard -type f -exec chmod a-x {} \;
+
+		# Don't nuke perms on external_node. It needs to be executable for puppet to use the enc.
+		if [ -f /etc/puppetlabs/puppet-dashboard/external_node ]; then
+			chmod 755 /etc/puppetlabs/puppet-dashboard/external_node
+		fi
+
+    # Dashboard enc fix (#9387 & #9224)
+    chown root:root /etc/puppetlabs/puppet-dashboard
+    chmod 755 /etc/puppetlabs/puppet-dashboard
+
+    if [ ! -h /opt/puppet/share/puppet-dashboard/config/database.yml ]; then
+        ln -s /etc/puppetlabs/puppet-dashboard/database.yml /opt/puppet/share/puppet-dashboard/config/database.yml
     fi
 
 esac
-
 #DEBHELPER#

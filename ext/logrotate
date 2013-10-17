@@ -1,5 +1,5 @@
 # Rotate puppet-dashboard logs
-/usr/share/puppet-dashboard/log/*.log {
+/var/log/pe-puppet-dashboard/*.log {
   daily
   missingok
   rotate 7

@@ -1,0 +1,8 @@
+<Location />
+    AuthType Basic
+    AuthBasicProvider ldap
+    AuthName "Puppet Enterprise Console"
+    AuthLDAPURL "ldap://ldapserver.localdomain/dc=localdomain?uid?sub"
+    AuthzLDAPAuthoritative off
+    Require valid-user
+</Location>

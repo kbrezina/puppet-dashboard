@@ -1,0 +1,4 @@
+#
+# Default # of threads to run for dashboard delayed jobs
+#
+CPUS=2

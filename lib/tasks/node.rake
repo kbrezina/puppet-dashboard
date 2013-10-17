@@ -1,5 +1,21 @@
-$: << File.dirname(__FILE__)
-require 'rake_helpers'
+def get_node
+  node_name = ENV['name']
+  begin
+    node = Node.find_by_name(node_name)
+
+    if node.nil?
+      puts "Node #{node_name} doesn't exist!"
+      exit 1
+    end
+  rescue NameError
+    puts 'Must specify node name (name=<hostname>).'
+    exit 1
+  rescue => e
+    puts "There was a problem finding the node: #{e.message}"
+    exit 1
+  end
+  node
+end
 
 namespace :node do
   desc 'Add a new node'
@@ -16,14 +32,35 @@ namespace :node do
       exit 1
     end
 
-    # groups and classses are optional, default to [] if not provided
-    groups = ENV['groups'].split(',').map(&:strip) rescue []
-    classes = ENV['classes'].split(',').map(&:strip) rescue []
+    groups = []
+
+    if ENV['groups']
+      begin
+        ENV['groups'].split(/,\s*/).each do |group|
+          ng = NodeGroup.find_by_name(group)
+          unless ng.nil?
+            groups << ng
+          end
+        end
+      end
+    end
+
+    classes = []
+
+    if ENV['classes']
+      ENV['classes'].split(/,\s*/).each do |c|
+        nc = NodeClass.find_by_name(c)
+        unless nc.nil?
+          classes << nc
+        end
+      end
+    end
 
     begin
       node = Node.new(:name => name)
-      node.node_groups = NodeGroup.find_all_by_name(groups)
-      node.node_classes = NodeClass.find_all_by_name(classes)
+      node.node_groups = groups
+      node.node_classes = classes
+
       node.save!
       puts 'Node successfully created!'
     rescue => e
@@ -34,18 +71,26 @@ namespace :node do
 
   desc "Add group(s) to a node"
   task :addgroup => :environment do
-    node = get_node(ENV['name'])
+    node = get_node
 
-    unless ENV['group']
+    groups = node.node_groups
+
+    if ENV['group']
+      ENV['group'].split(/,\s*/).each do |g|
+        ng = NodeGroup.find_by_name(g)
+        unless ng.nil?
+          groups << ng unless groups.include?(ng)
+        end
+      end
+    else
       puts 'Must specify group(s) to add to node'
       exit 1
     end
 
-    groups = ENV['group'].split(',').map(&:strip)
+    node.node_groups = groups
 
     begin
-      # ActiveRecord << takes effect immediately without save!
-      node.node_groups << [ NodeGroup.find_all_by_name(groups) - node.node_groups ]
+      node.save!
       puts "Node groups successfully edited for #{node.name}!"
     rescue => e
       puts "There was a problem saving the node: #{e.message}"
@@ -55,10 +100,14 @@ namespace :node do
 
   desc "List groups for a node"
   task :listgroups => :environment do
-    node = get_node(ENV['name'])
+    node = get_node
 
     begin
-      node.node_groups.map(&:name).map{|n| puts n}
+      groups = node.node_groups
+
+      groups.each do |group|
+        puts group.name
+      end
     rescue => e
       puts e.message
       exit 1
@@ -67,18 +116,26 @@ namespace :node do
 
   desc "Add class(s) to a node"
   task :addclass => :environment do
-    node = get_node(ENV['name'])
+    node = get_node
 
-    unless ENV['class']
+    classes = node.node_classes
+
+    if ENV['class']
+      ENV['class'].split(/,\s*/).each do |c|
+        nc = NodeClass.find_by_name(c)
+        unless nc.nil?
+          classes << nc unless classes.include?(nc)
+        end
+      end
+    else
       puts 'Must specify class(es) to add to node'
       exit 1
     end
 
-    classes = ENV['class'].split(',').map(&:strip)
+    node.node_classes = classes
 
     begin
-      # ActiveRecord << takes effect immediately without save!
-      node.node_classes << [ NodeClass.find_all_by_name(classes) - node.node_classes ]
+      node.save!
       puts "Node classes successfully edited for #{node.name}!"
     rescue => e
       puts "There was a problem saving the node: #{e.message}"
@@ -88,10 +145,14 @@ namespace :node do
 
   desc "List classes for a node"
   task :listclasses => :environment do
-    node = get_node(ENV['name'])
+    node = get_node
 
     begin
-      node.node_classes.map(&:name).map{|n| puts n}
+      classes = node.node_classes
+
+      classes.each do |klass|
+        puts klass.name
+      end
     rescue => e
       puts e.message
       exit 1
@@ -101,7 +162,7 @@ namespace :node do
   desc 'Remove a node'
   task :del => :environment do
     begin
-      get_node(ENV['name']).destroy
+      get_node.destroy
     rescue => e
       puts e.message
       exit 1
@@ -110,15 +171,24 @@ namespace :node do
 
   desc 'Replace class(es) for a node'
   task :classes => :environment do
-    node = get_node(ENV['name'])
+    node = get_node
 
-    unless ENV['classes']
+    classes = []
+
+    if ENV['classes']
+      ENV['classes'].split(/,\s*/).each do |c|
+        nc = NodeClass.find_by_name(c)
+        unless nc.nil?
+          classes << nc
+        end
+      end
+    else
       puts 'Must specify class(es) to set on node.'
       exit 1
     end
 
-    classes = ENV['classes'].split(',').map(&:strip)
-    node.node_classes = NodeClass.find_all_by_name(classes)
+    p classes
+    node.node_classes = classes
 
     begin
       node.save!
@@ -131,10 +201,10 @@ namespace :node do
 
   desc 'Show/Edit/Add parameters for a node'
   task :parameters => :environment do
-    node = get_node(ENV['name'])
+    node = get_node
 
     # Show parameters
-    unless ENV['parameters']
+    if ENV['parameters'].nil?
       node.parameters.each do |p|
         puts "#{p.key}=#{p.value}"
       end
@@ -183,15 +253,23 @@ namespace :node do
 
   desc 'Replace groups for a node'
   task :groups => :environment do
-    node = get_node(ENV['name'])
+    node = get_node
 
-    unless ENV['groups']
+    groups = []
+
+    if ENV['groups']
+      ENV['groups'].split(/,\s*/).each do |g|
+        ng = NodeGroup.find_by_name(g)
+        unless ng.nil?
+          groups << ng
+        end
+      end
+    else
       puts 'Must specify group(s) to set on node'
       exit 1
     end
 
-    groups = ENV['groups'].split(',').map(&:strip)
-    node.node_groups = NodeGroup.find_all_by_name(groups)
+    node.node_groups = groups
 
     begin
       node.save!
@@ -204,8 +282,20 @@ namespace :node do
 
   desc 'List nodes'
   task :list => :environment do
-    names = Node.all.map(&:name)
-    regex = ENV['match'] # if nil, everything matches
-    names.grep(/#{regex}/).map{|n| puts n}
+    regex = false
+
+    if ENV['match']
+      regex = ENV['match']
+    end
+
+    Node.find(:all).each do |node|
+      if regex
+        if node.name =~ /#{regex}/
+          puts node.name
+        end
+      else
+        puts node.name
+      end
+    end
   end
 end

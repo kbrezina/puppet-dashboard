@@ -1,0 +1,121 @@
+#!/bin/bash
+#
+# pe-puppet-dashboard-workers Start up the pe-puppet-dashboard-workers
+#
+# chkconfig: 2345 95 5
+# description: Delayed_job (or DJ) encapsulates the common pattern of \
+#              asynchronously executing longer tasks in the background.
+#
+# processname: puppet-dashboard-workers
+
+### BEGIN INIT INFO
+# Provides: pe-puppet-dashboard-workers
+# Required-Start: $local_fs $network $syslog
+# Required-Stop: $local_fs $syslog
+# Should-Start: $syslog mysql
+# Should-Stop: $network $syslog
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 4 6
+# Short-Description: pe-puppet-dashboard-workers
+# Description: pe-puppet-dashboard-workers
+### END INIT INFO
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+#name=puppet-dashboard-workers
+name=pe-puppet-dashboard-workers
+
+# pull in sysconfig settings
+# first the general dashboard settings, then the dedicated settings for
+# the workers
+[ -f /etc/sysconfig/pe-puppet-dashboard ] && . /etc/sysconfig/pe-puppet-dashboard
+[ -f /etc/sysconfig/$name ] && . /etc/sysconfig/$name
+
+# The default dashboard root if not set in sysconfig
+: ${DASHBOARD_ROOT:=/opt/puppet/share/puppet-dashboard}
+
+RETVAL=0
+prog="${name}"
+lockfile=/var/lock/subsys/$prog
+
+start()
+{
+	echo -n $"Starting $prog: "
+	daemon --user puppet-dashboard "bash -e -c '
+		export PATH='${PATH}';
+		export RUBYLIB='${RUBYLIB:-}';
+		export RAILS_ENV=production;
+		${DASHBOARD_RUBY} ${DASHBOARD_ROOT}/script/delayed_job -p dashboard -n ${CPUS:-2} -m start;'"
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && (touch $lockfile; echo_success) || echo_failure
+	echo
+	return $RETVAL
+}
+
+stop()
+{
+	echo -n $"Stopping $prog: "
+	bash -e -c "
+		export PATH='${PATH}';
+		export RUBYLIB='${RUBYLIB}';
+		export RAILS_ENV=production;
+		${DASHBOARD_RUBY} ${DASHBOARD_ROOT}/script/delayed_job -p dashboard -n ${CPUS:-2} -m stop;"
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && (rm -f $lockfile; echo_success) || echo_failure
+	echo
+}
+
+restart() {
+	stop
+	start
+}
+
+rh_status() {
+	RETVAL=1
+	for pidfile in $(ls -1 "${DASHBOARD_ROOT}"/tmp/pids/*.pid 2>/dev/null)
+	do
+		status -p $pidfile $name || return $?
+		RETVAL=$?
+	done
+	return $RETVAL
+}
+
+rh_status_q() {
+	rh_status >/dev/null 2>&1
+}
+
+case "$1" in
+	start)
+		if rh_status_q; then
+                  echo -n "$prog already running"
+                  echo_warning
+                  echo
+                  exit 1
+                else
+                  start
+                fi
+		;;
+	stop)
+		if ! rh_status_q; then
+                  echo -n "$prog already stopped"
+                  echo_warning
+                  echo
+		  rm -f $lockfile
+		  exit 1
+		else
+		  stop
+                fi
+		;;
+	restart)
+		restart
+		;;
+	status)
+		rh_status
+		RETVAL=$?
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart|status}"
+		RETVAL=2
+esac
+exit $RETVAL
