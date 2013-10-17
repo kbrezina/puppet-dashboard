@@ -1,17 +1,17 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          puppet-dashboard-workers
+# Provides:          pe-puppet-dashboard-workers
 # Required-Start:    $local_fs $remote_fs $network $syslog
 # Required-Stop:     $local_fs $remote_fs $network $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # X-Interactive:     true
-# Short-Description: Start/stop puppet-dashboard-workers delayed_job helpers
+# Short-Description: Start/stop pe-puppet-dashboard-workers delayed_job helpers
 ### END INIT INFO
 #
-# puppet-dashboard-workers   This init.d script is used to start puppet-dashboard-workers.
+# pe-puppet-dashboard-workers   This init.d script is used to start pe-puppet-dashboard-workers.
 
-name=puppet-dashboard-workers
+name=pe-puppet-dashboard-workers
 ENV="env -i LANG=C PATH=/usr/local/bin:/usr/bin:/bin"
 
 set -e
@@ -22,16 +22,15 @@ test -f /etc/default/rcS && . /etc/default/rcS
 test -f /etc/default/${name} && . /etc/default/${name}
 
 # Set defaults in case they're not in the above defaults file:
-DASHBOARD_HOME=${DASHBOARD_HOME:-/usr/share/puppet-dashboard}
-DASHBOARD_USER=${DASHBOARD_USER:-www-data}
-DASHBOARD_RUBY=${DASHBOARD_RUBY:-/usr/bin/ruby}
+DASHBOARD_HOME=${DASHBOARD_HOME:-/opt/puppet/share/puppet-dashboard}
+DASHBOARD_USER=${DASHBOARD_USER:-puppet-dashboard}
+DASHBOARD_RUBY=${DASHBOARD_RUBY:-/opt/puppet/bin/ruby}
 DASHBOARD_ENVIRONMENT=${DASHBOARD_ENVIRONMENT:-production}
 DASHBOARD_IFACE=${DASHBOARD_IFACE:-0.0.0.0}
 DASHBOARD_PORT=${DASHBOARD_PORT:-3000}
 
 check_dashboard_enabled_option() {
     if [ ! "$START" = "yes" ]; then
-        log_warning_msg "Not starting Puppet Dashboard Workers, disabled via /etc/default/${name}"
         return 1
     else
         return 0
@@ -40,9 +39,9 @@ check_dashboard_enabled_option() {
 
 check_puppet_dashboard_worker_status() {
     RETVAL=1
-    for pidfile in $(ls -1 "${DASHBOARD_HOME}"/tmp/pids/delayed_job*.pid 2>/dev/null)
+    for pidfile in $(ls -1 "${DASHBOARD_HOME}"/tmp/pids/*.pid 2>/dev/null)
     do
-      status_of_proc -p $pidfile ${DASHBOARD_RUBY} "Puppet Dashboard Worker (pid $(cat $pidfile))"  ||  return $?
+      status_of_proc -p $pidfile ${DASHBOARD_RUBY} "PE Puppet Dashboard Worker (pid $(cat $pidfile))"  ||  return $?
       RETVAL=$?
     done
     if [ "$RETVAL" -eq "1" ] ; then
@@ -53,7 +52,7 @@ check_puppet_dashboard_worker_status() {
 
 stop_puppet_dashboard_workers() {
     RETVAL=0
-    for pidfile in $(ls -1 "${DASHBOARD_HOME}"/tmp/pids/delayed_job*.pid 2>/dev/null)
+    for pidfile in $(ls -1 "${DASHBOARD_HOME}"/tmp/pids/*.pid 2>/dev/null)
     do
       start-stop-daemon --stop --quiet --oknodo --pidfile $pidfile --retry 10
       ((RETVAL=RETVAL+$?))
@@ -72,7 +71,7 @@ start_puppet_dashboard_workers() {
 
 case $1 in
     start)
-        log_daemon_msg "Starting Puppet Dashboard Workers"
+        log_daemon_msg "Starting PE Puppet Dashboard Workers"
         if ! check_dashboard_enabled_option; then
             log_end_msg 0
             exit
@@ -84,7 +83,7 @@ case $1 in
         fi
     ;;
     stop)
-        log_daemon_msg "Stopping Puppet Dashboard Workers"
+        log_daemon_msg "Stopping PE Puppet Dashboard Workers"
         if stop_puppet_dashboard_workers ; then
             log_end_msg 0
         else
@@ -92,7 +91,7 @@ case $1 in
         fi
     ;;
     restart)
-        log_daemon_msg "Restarting Puppet Dashboard Workers"
+        log_daemon_msg "Restarting PE Puppet Dashboard Workers"
         set +e
         stop_puppet_dashboard_workers
         RET="$?"

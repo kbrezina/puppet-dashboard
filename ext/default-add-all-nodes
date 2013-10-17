@@ -1,0 +1,3 @@
+MAILTO=""
+PATH=/opt/puppet/bin:/bin:/usr/bin:/usr/sbin:/usr/local/bin
+*/2 * * * * root rake -sf /opt/puppet/share/puppet-dashboard/Rakefile defaultgroup:ensure_default_group RAILS_ENV=production

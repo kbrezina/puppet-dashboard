@@ -1,14 +1,22 @@
 # Add your own tasks in files placed in lib/tasks ending in .rake,
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 require 'rake'
-require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
-["rake/testtask","rdoc/task","thread","tasks/rails"].each do |dependency|
-  begin
-    require dependency
-  rescue LoadError => e
-    puts "Could not load #{dependency}. Some rake tasks may not be available without #{dependency}."
-    puts "The load error generated the following message: #{e.message}"
+# We parse the arguments to determine if we're listing tasks or executing a
+# packaging task. If so, we don't want to load rails, because it loads bundler,
+# which demands we fulfill the dependencies in the Gemfile.
+rails_task = ARGV.grep(/^(package:|p[le]:|clean)/).empty?
+
+if rails_task
+  require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+
+  ["rake/testtask","rdoc/task","thread","tasks/rails"].each do |dependency|
+    begin
+      require dependency
+    rescue LoadError => e
+      puts "Could not load #{dependency}. Some rake tasks may not be available without #{dependency}."
+      puts "The load error generated the following message: #{e.message}"
+    end
   end
 end
 

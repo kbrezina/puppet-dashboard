@@ -1,19 +1,16 @@
-Source: puppet-dashboard
+Source: pe-puppet-dashboard
 Section: web
-Priority: extra
-Maintainer: James Turnbull <james@puppetlabs.com>
-Build-Depends: debhelper (>= 7), cdbs
-Build-Depends-Indep: po-debconf
-Standards-Version: 3.8.4
-Homepage: http://github.com/puppetlabs/puppet-dashboard
+Priority: optional
+Maintainer: Puppet Labs <info@puppetlabs.com>
+Build-Depends: cdbs, debhelper (>> 7)
+Standards-Version: 3.9.1
+Homepage: http://www.puppetlabs.com
 
-Package: puppet-dashboard
+Package: pe-puppet-dashboard
 Architecture: all
-Pre-Depends: debconf
-Depends: ruby, ruby1.8 (>= 1.8.7), rake (>=0.8.3), dbconfig-common, libdbd-mysql-ruby, mysql-client, rubygems, libhttpclient-ruby1.8
-Suggests: mysql-server
-Recommends: libapache2-mod-passenger
-Description: Dashboard for Puppet
- The Puppet Dashboard is a web application for managing the Puppet configuration
- management tool.
-
+Pre-Depends: adduser
+Depends: ${shlibs:Depeneds}, ${misc:Depends}, pe-ruby1.8, pe-rubygems, pe-rake, pe-ruby-mysql,
+ pe-httpd-passenger
+Description: Web reporting, and external node classification for Puppet
+ Puppet Dashboard provides a web interface to view node reports, and
+ provides an enternal node classifier for the Puppet Master.

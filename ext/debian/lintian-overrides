@@ -1,0 +1,586 @@
+dir-or-file-in-opt opt/puppet/
+dir-or-file-in-opt opt/puppet/share/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/application_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/node_classes_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/node_groups_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/nodes_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/pages_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/reports_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/statuses_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/users_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/user_sessions_controller.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/application_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/maruku_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/node_classes_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/node_groups_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/nodes_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/pages_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/paginate_scope_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/reports_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/status_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/user_sessions_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/users_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/mixins/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/mixins/searchable_index.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/assignment.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/node_class_membership.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/node_class.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/node_group_class_membership.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/node_group_edge.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/node_group_membership.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/node_group.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/node.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/parameter.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/report.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/service.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/status.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/timeline_event.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/user.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/user_session.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/layouts/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/layouts/application.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_classes/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_classes/_actions.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_classes/edit.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_classes/_form.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_classes/index.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_classes/new.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_classes/show.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/_actions.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/edit.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/_form.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/index.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/new.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/_node_groups.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/_search.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/node_groups/show.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_actions.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/edit.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_form.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/index.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/new.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_node_classes.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_node_groups.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_node.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_nodes.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_parameter_input.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_search.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/show.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/pages/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/pages/home.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/pages/index.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/pages/release_notes.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/parameters/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/parameters/_parameter_input.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/transaction/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/transaction/reports/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/transaction/reports/_report.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/util/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/util/logs/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/util/logs/_log.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/util/metrics/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/puppet/util/metrics/_metric.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/index.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_report.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_report_status_icon.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_report_status_td.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/show.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/services/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/services/edit.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/services/index.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/services/new.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/services/show.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_global_nav.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_inspector.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_node_manager_sidebar_for_type.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_node_manager_sidebar.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_search.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_secondary_nav.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/statuses/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/statuses/_overview.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/statuses/overview.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/statuses/_run_failure.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/statuses/_run_time.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/statuses/show.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/timeline_events/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/timeline_events/_timeline_event.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/users/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/users/edit.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/user_sessions/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/user_sessions/new.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/users/_form.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/users/new.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/users/show.html.haml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/bin/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spool
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/bin/external_node
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/boot.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/database.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/settings.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/environment.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/environments/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/environments/development.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/environments/production.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/environments/test.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/app_version_init.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/backtrace_silencers.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/check_migration_version.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/clear_cached_assets.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/inflections.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/mime_types.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/new_rails_defaults.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/requires.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/session_store.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/time_formats.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/locales/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/locales/en.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/routes.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20090916215745_basic_schema.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20090916221313_create_node_group_memberships.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20090917163433_create_node_classes.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20090917163500_create_node_class_memberships.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20090921151631_create_node_groups.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091025181245_create_node_group_class_memberships.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091025182048_add_parameters_to_node_groups.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091028174517_create_timeline_events.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091028210805_create_users.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091110002528_create_parameters.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091110005353_remove_parameters_from_node.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091116212418_create_node_group_edges.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091116235339_remove_parameters_from_node_groups.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091120013227_create_reports.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091130201400_add_url_to_node.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091208225308_add_reported_at_to_node.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091215194836_add_success_to_report.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091217192540_add_host_and_time_to_report.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20091217212330_migrate_report_data.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20100318131825_add_indexes.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20100726070117_add_success_and_last_report_to_nodes.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20100806181533_cleanup_node_memberships.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20100810011613_change_report_report_field_size_to_be_larger.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20100811204545_add_success_to_report_index.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20100909191050_remove_duplicate_class_and_group_memberships.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20100916183948_adjust_indexes_on_reports.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/schema.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/seeds.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/ext/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/ext/passenger/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/ext/passenger/dashboard-vhost.conf
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/ext/puppet/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/ext/puppet/puppet_dashboard.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/active_model_scopes.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/association_collection_dependent.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/has_many_through_dependent.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/has_parameters.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/node_group_cycle_error.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/node_group_graph.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/normalize_names.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/parameter_conflict_error.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/progress_bar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/puppet/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/puppet/report.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/ci.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/classesgroups.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/db_raw.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/import_reports.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/install.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/mail_patches.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/node.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/package.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/prune_reports.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/rspec.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/rspec_rcov.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/scss.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/summarize_reports.rake
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/log
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/public
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/Rakefile
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/about
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/autospec
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/console
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/dbconsole
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/destroy
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/generate
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/performance/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/performance/benchmarker
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/performance/profiler
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/plugin
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/runner
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/server
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/spec
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/spec_server
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/node_classes_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/node_groups_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/nodes_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/pages_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/reports_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/statuses_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/users_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/user_sessions_controller_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/edge_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/node_class_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/node_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/node_group_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/parameter_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/report_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/service_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/exemplars/user_exemplar.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/failure.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/meta.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet25/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet25/1_changed_0_failures.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/0_changed_0_failures.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_error_exec_returns_non_zero.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_error_missing_dependency.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_error_on_package_service_and_files.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_ok_exec_returns_zero.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_ok_file_service_package.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_ok_service_and_exec_already_in_correct_state.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_ok_service_started_ok.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/report_ok_single_file.yaml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/success.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/sample_report_2_6_0.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/sample_report.yml
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/sample_report.yml.erb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/application_helper_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/pages_helper_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/paginate_scope_helper_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/reports_helper_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/status_helper_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/user_sessions_helper_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/users_helper_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/normalize_names_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/puppet/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/puppet/report_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/assignment_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/node_class_membership_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/node_class_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/node_group_class_membership_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/node_group_edge_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/node_group_membership_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/node_group_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/node_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/parameter_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/report_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/status_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/user_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/rcov.opts.example
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/shared_behaviors/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/shared_behaviors/action_integration_behavior.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/shared_behaviors/controller_mixins.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/shared_behaviors/controller_search.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/shared_behaviors/restful_controller_behavior.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/shared_behaviors/restful_routing_behavior.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/spec_helper.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/spec.opts.example
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/support/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/support/describe_reports.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/support/factories.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/support/from_response_body.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/support/report_support.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_classes/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_classes/_actions.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_classes/edit.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_classes/index.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_classes/new.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_classes/show.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/_actions.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/edit.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/index.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/new.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/_node_groups.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/_search.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/node_groups/show.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/_actions.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/edit.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/index.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/new.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/_node_classes.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/_node.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/nodes/show.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/reports/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/reports/index.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/reports/_report.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/reports/_report_status_icon.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/reports/_report_status_td.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/reports/show.html.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/timeline_events/
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/timeline_events/_timeline_event.haml_spec.rb
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/watchr.rb.example
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/tmp
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/vendor/*
+dir-or-file-in-opt opt/puppet/share/puppet-dashboard/VERSION
+embedded-javascript-library opt/puppet/share/puppet-dashboard/vendor/plugins/jrails/javascripts/jquery.js
+embedded-javascript-library opt/puppet/share/puppet-dashboard/vendor/rails/actionpack/test/fixtures/public/javascripts/prototype.js
+embedded-javascript-library opt/puppet/share/puppet-dashboard/vendor/rails/railties/html/javascripts/prototype.js
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/about (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/about
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/autospec (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/autospec
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/console (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/console
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/dbconsole (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/dbconsole
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/destroy (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/destroy
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/generate (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/generate
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/performance/benchmarker (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/performance/benchmarker
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/performance/profiler (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/performance/profiler
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/plugin (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/plugin
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/runner (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/runner
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/server (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/server
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/spec (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/spec
+wrong-path-for-interpreter ./opt/puppet/share/puppet-dashboard/script/spec_server (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+ruby-script-but-no-ruby-dep ./opt/puppet/share/puppet-dashboard/script/spec_server
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/bin/external_node (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/bin/external_node
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/about (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/about
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/autospec (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/autospec
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/console (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/console
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/dbconsole (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/dbconsole
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/destroy (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/destroy
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/generate (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/generate
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/performance/benchmarker (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/performance/benchmarker
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/performance/profiler (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/performance/profiler
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/plugin (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/plugin
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/runner (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/runner
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/server (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/server
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/spec (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/spec
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/spec_server (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/spec_server
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/failure.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/delete.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/edit.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/failure.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/success.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/cancel.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/notice.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/delete.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/error.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/loading.gif
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/edit.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/warning.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/success.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/close.gif
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/images/icons/computer.png
+pe-puppet-dashboard binary: executable-not-elf-or-script var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/computer.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/404.html
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/422.html
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/500.html
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/close.gif
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/dashboard_logo.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/favicon.ico
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/add.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/add_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/add_light_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/cancel.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/close.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/computer.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/delete.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/edit.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/error.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/failure.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/notice.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/search.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/success.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/icons/warning.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/loading.gif
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/images/rails.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/application.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/excanvas.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/grafico.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery-ui.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.form.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.livequery.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.min.js
+pe-puppet-dashboard binary: embedded-javascript-library var/opt/pe-puppet-dashboard/public/javascripts/jquery.min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.placeholders.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.templating.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.tipsy.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.tokeninput.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.ui.autocomplete.ext.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jquery.ui.autocomplete.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/jrails.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/prototype.js
+pe-puppet-dashboard binary: embedded-javascript-library var/opt/pe-puppet-dashboard/public/javascripts/prototype.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/raphael-min.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/javascripts/search.js
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/application.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/forms.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/grid.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/header.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/add.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/add_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/add_light_grey.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/computer.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/delete.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/edit.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/failure.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/search.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/icons/success.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/tipsy.gif
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/white-overlay.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/images/white-overlays.png
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/jquery.ui.autocomplete.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/layout.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/links.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/reset.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/sass/application.scss
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/tables.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/tipsy.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/token-input-facebook.css
+pe-puppet-dashboard binary: file-in-unusual-dir var/opt/pe-puppet-dashboard/public/stylesheets/typography.css
+pe-puppet-dashboard binary: wrong-path-for-interpreter opt/puppet/share/puppet-dashboard/script/delayed_job (#!/opt/puppet/bin/ruby1.8 != /usr/bin/ruby1.8)
+pe-puppet-dashboard binary: ruby-script-but-no-ruby-dep opt/puppet/share/puppet-dashboard/script/delayed_job
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/delayed_job_failures_controller.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/files_controller.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/controllers/node_group_memberships_controller.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/helpers/string_helper.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/delayed_job_failure.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/metric.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/report_log.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/resource_event.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/models/resource_status.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/delayed_job_failures/
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/delayed_job_failures/index.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/metrics/
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/metrics/_metrics_table.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_activity.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_description.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_facts.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_hidden.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_inspections.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_inventory_parameter.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_inventory_service.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_reports.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/_reports_table_tfoot.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/nodes/inventory_search.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/pages/_node_summary_row.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_log.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_metrics.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_report_title.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_reports_table.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/_resource_statuses.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/reports/search.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_classes.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_groups.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/app/views/shared/_parameters.html.haml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/00_settings_reader_init.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/delayed_job.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/initializers/sass.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/config/preinitializer.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20101109001012_add_status_to_reports.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20101118222325_add_hidden_to_nodes.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20101206225510_schematize_reports.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20101229023023_add_baseline_report_id_to_nodes.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20101230054456_drop_user_table.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110105015322_add_out_of_sync_count_to_resource_statuses.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110105231637_remove_source_description_from_resource_statuses.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110105231833_remove_source_description_from_resource_events.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110105233543_add_historical_value_to_resource_events.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110105233640_add_audited_to_resource_events.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110105234202_remove_tags_from_resource_events.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110106002514_add_skipped_to_resource_statuses.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110107233911_remove_out_of_sync_column.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110113012919_make_long_string_fields_into_text_fields.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110113013807_add_last_inspect_report_id_to_nodes.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110113183616_remove_unused_tables_and_models.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110113195253_rename_column_last_report_id_to_last_apply_report_id_on_nodes.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110114190814_add_failed_to_resource_statuses.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110130010154_remove_column_baseline_report_id_from_nodes.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110603183820_add_status_column_to_resource_statuses.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110614234202_create_delayed_jobs.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110620111500_create_delayed_job_failures.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110728195829_add_node_host_uniqueness_constraint.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/db/migrate/20110729201310_add_delayed_job_failure_backtrace.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/core_callbacks.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/csv_extensions.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/data_generator.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/incorrect_report_kind.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/node_classification_disabled_error.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/puppet_https.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/read_only_enabled_error.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/registry.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/report_transformer.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/settings_reader.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/clean_sample_reports.rake
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/generate_and_import_samples.rake
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/generate_sample_reports.rake
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/generate_unresponsive_nodes.rake
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/plugins.rake
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/schematize_reports.rake
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/lib/tasks/update_report_data.rake
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/script/delayed_job
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/application_controller_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/delayed_job_failures_controller.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/files_controller_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/controllers/node_group_memberships_controller_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/factories.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/puppet26/resource_status_test.yaml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/version2/
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/fixtures/reports/version2/example.yaml
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/helpers/string_helper_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/core_callbacks_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/registry_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/report_transformer_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/settings_reader_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/lib/settings_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/resource_event_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/models/resource_status_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/shared_behaviors/sorted_index.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/statuses/
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spec/views/statuses/_run_failure.html.haml_spec.rb
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/spool/
+pe-puppet-dashboard binary: init.d-script-does-not-implement-required-option etc/init.d/pe-puppet-dashboard-workers force-reload
+pe-puppet-dashboard binary: dir-or-file-in-opt opt/puppet/share/puppet-dashboard/*
+pe-puppet-dashboard binary: bad-permissions-for-etc-cron.d-script etc/cron.d/default-add-all-nodes 0777 != 0644

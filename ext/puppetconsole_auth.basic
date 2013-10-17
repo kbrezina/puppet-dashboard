@@ -1,0 +1,6 @@
+<Location />
+    AuthType Basic
+    AuthName "Puppet Enterprise Console"
+    AuthUserFile /etc/puppetlabs/httpd/console_passwd
+    Require valid-user
+</Location>

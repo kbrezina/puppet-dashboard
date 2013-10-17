@@ -1,0 +1,133 @@
+#!/bin/bash
+#
+# pe-puppet-dashboard-workers		Start up the pe-puppet-dashboard-workers r
+#
+# description: Delayed_job (or DJ) encapsulates the common pattern of \
+#              asynchronously executing longer tasks in the background.
+#
+# processname: pe-puppet-dashboard-workers
+
+### BEGIN INIT INFO
+# Provides: pe-puppet-dashboard-workers
+# Required-Start: $local_fs $network $syslog
+# Required-Stop: $local_fs $syslog
+# Should-Start: $syslog mysql
+# Should-Stop: $network $syslog
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 4 6
+# Short-Description: pe-puppet-dashboard-workers
+# Description: pe-puppet-dashboard-workers
+### END INIT INFO
+
+# source function library
+. /lib/lsb/init-functions
+
+name=pe-puppet-dashboard-workers
+
+# pull in sysconfig settings
+# first the general dashboard settings, then the dedicated settings for
+# the workers
+[ -f /etc/sysconfig/pe-puppet-dashboard ] && . /etc/sysconfig/pe-puppet-dashboard
+[ -f /etc/sysconfig/$name ] && . /etc/sysconfig/$name
+
+# The default dashboard root if not set in sysconfig
+: ${DASHBOARD_ROOT:=/opt/puppet/share/puppet-dashboard}
+
+RETVAL=0
+prog="${name}"
+lockfile=/var/lock/subsys/$prog
+
+# For SELinux we need to use 'runuser' not 'su'
+if [ -x /sbin/runuser ]
+then
+    SU=runuser
+else
+    SU=su
+fi
+
+start()
+{
+	echo -n $"Starting $prog: "
+        $SU -l puppet-dashboard -s /bin/bash -c -- bash -c "
+                export PATH='${PATH}';
+		export RUBYLIB='${RUBYLIB:-}';
+		export RAILS_ENV=production;
+		${DASHBOARD_RUBY} ${DASHBOARD_ROOT}/script/delayed_job -p dashboard -n ${CPUS:-2} -m start;"
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && (touch $lockfile; log_success_msg "$prog started")
+	echo
+	return $RETVAL
+}
+
+stop()
+{
+	echo -n $"Stopping $prog: "
+	$SU -l puppet-dashboard -s /bin/bash -c -- bash -c "
+		export PATH='${PATH}';
+		export RUBYLIB='${RUBYLIB}';
+		export RAILS_ENV=production;
+		${DASHBOARD_RUBY} ${DASHBOARD_ROOT}/script/delayed_job -p dashboard -n ${CPUS:-2} -m stop;"
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && (rm -f $lockfile; log_success_msg "$prog stopped") || log_failure_msg "$prog could not be stopped"
+}
+
+restart() {
+	stop
+	start
+}
+
+sles_status () {
+	RETVAL=1
+	for pidfile in $(ls -1 "${DASHBOARD_ROOT}"/tmp/pids/*.pid 2>/dev/null)
+	do
+		test -e $pidfile || return $?
+		RETVAL=$?
+	done
+	return $RETVAL
+}
+
+sles_status_q() {
+	sles_status >/dev/null 2>&1
+}
+
+sles_status_string() {
+      RETVAL=sles_status_q
+      if $RETVAL; then
+              PIDS=""
+              for pidfile in $(ls -1 "${DASHBOARD_ROOT}"/tmp/pids/*.pid 2>/dev/null)
+              do
+                      PIDS="${PIDS}, `cat $pidfile`"
+              done
+              echo -n "$prog is running (${PIDS:2})"
+      else
+              echo -n "$prog is not running"
+      fi
+
+      return $RETVAL
+}
+
+case "$1" in
+	start)
+		sles_status_q && exit 0
+		start
+		;;
+	stop)
+		if ! sles_status_q; then
+			rm -f $lockfile
+			exit 0
+		fi
+		stop
+		;;
+	restart)
+		restart
+		;;
+	status)
+                echo -n $"Status $prog: "
+		sles_status_string
+		rc_status -v
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart|status}"
+		RETVAL=2
+esac
+exit $RETVAL

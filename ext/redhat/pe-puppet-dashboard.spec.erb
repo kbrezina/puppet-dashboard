@@ -1,0 +1,429 @@
+%global p_vendor       pe
+%global _name          puppet-dashboard
+%global ruby_abi       1.8
+%global ruby_version   1.8.7.370
+
+%if 0%{?p_vendor:1}
+    %global name_prefix      %{p_vendor}-
+
+    # The %{!?foo: ...} idiom is needed, because the spec gets re-evaluated for
+    # each package that is built.  This really messes with things that are only
+    # supposed to be evaluated at "definition time".
+
+    # Grab the "real" directories so we can reference the system's files.
+    %{!?_real_initrddir:     %global _real_initrddir     %{_initrddir}}
+    %{!?_real_localstatedir: %global _real_localstatedir %{_localstatedir}}
+    %{!?_real_sysconfdir:    %global _real_sysconfdir    %{_sysconfdir}}
+
+    # Use the alternate locations for things.
+    %define _initrddir       %{_real_initrddir}
+    %define _localstatedir   %{_real_localstatedir}
+    %define _sysconfdir      %{_real_sysconfdir}/puppetlabs
+    %define cache_dir        %{_real_localstatedir}/opt/cache/%{name}
+
+    # Override the _prefix last, so we can get the _real_* locations.
+    %{!?_orig_prefix:     %global _orig_prefix     %{_prefix}}
+    %define               _prefix /opt/puppet
+    %define               _logdir /var/log/%{name}
+%endif
+
+%global confdir       ext/redhat
+%global realversion   <%= @version %>
+%global rpmversion    <%= @rpmversion %>
+%global dbuser        puppet-dashboard
+
+Name:           %{?name_prefix}%{_name}
+Version:        %{rpmversion}
+Release:        <%= @rpmrelease -%>%{?dist}
+Summary:        Systems Management web application
+Group:          Applications/System
+License:        ASL 2.0
+Vendor:         Puppet Labs
+URL:            http://www.puppetlabs.com
+Source0:        %{name}-%{realversion}.tar.gz
+
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-%(id -un)
+BuildArch:      noarch
+
+BuildRequires:  %{?name_prefix}ruby      >= %{ruby_version}
+BuildRequires:  %{?name_prefix}ruby(abi) = %{ruby_abi}
+
+Requires:       %{?name_prefix}ruby(abi) = %{ruby_abi}
+Requires:       %{?name_prefix}rubygems
+Requires:       %{?name_prefix}rubygem(rake)
+Requires:       %{?name_prefix}ruby-mysql
+Requires:       %{?name_prefix}httpd-passenger
+
+Requires(pre):    shadow-utils
+%if 0%{?suse_version}
+Requires:         pwdutils
+Requires:         aaa_base
+%else
+Requires(post):   chkconfig
+Requires(preun):  chkconfig
+Requires(preun):  initscripts
+Requires(postun): initscripts
+%endif
+
+
+%description
+Puppet Dashboard is a systems management web application for managing
+Puppet installations and is written using the Ruby on Rails framework.
+
+%pre
+getent group %{dbuser} > /dev/null || groupadd -r %{dbuser}
+getent passwd puppet-dashboard > /dev/null || \
+  useradd -r -g %{dbuser} -d %{_datadir}/puppet-dashboard -s /sbin/nologin \
+  -c "PE Puppet Dashboard" %{dbuser}
+# To avoid css,js permissions problems with dashboard, add apache to the dashboard group
+%if 0%{?suse_version}
+getent group pe-apache &> /dev/null && usermod -A puppet-dashboard pe-apache
+%else
+getent group pe-apache &> /dev/null && usermod -a -G puppet-dashboard pe-apache
+%endif
+
+exit 0
+
+%post
+chkconfig --add %{?name_prefix}puppet-dashboard-workers
+%if 0%{?suse_version}
+[ -f "/etc/puppetlabs/httpd/conf.d/pe-puppet-dashboard.conf" ] && rm -f /etc/puppetlabs/httpd/conf.d/pe-puppet-dashboard.conf || true
+%endif
+
+%prep
+%setup -q -n %{name}-%{realversion}
+
+%build
+
+%install
+%if 0%{?suse_version}
+export NO_BRP_CHECK_BYTECODE_VERSION=true
+%endif
+rm -rf $RPM_BUILD_ROOT
+
+install -p -d -m0755 $RPM_BUILD_ROOT%{_datadir}/%{_name}
+install -p -d -m0755 $RPM_BUILD_ROOT%{_datadir}/%{_name}/vendor
+install -p -d -m0755 $RPM_BUILD_ROOT%{_datadir}/%{_name}/public
+install -p -d -m0755 $RPM_BUILD_ROOT%{_logdir}
+install -p -d -m0755 $RPM_BUILD_ROOT%{_datadir}/%{_name}/spool
+install -p -d -m0755 $RPM_BUILD_ROOT%{_datadir}/%{_name}/tmp
+%if 0%{?suse_version}
+install -p -d -m0755 $RPM_BUILD_ROOT%{_datadir}/%{_name}/tmp/pids
+%endif
+
+ln -s %{_localstatedir}/log/%{name} $RPM_BUILD_ROOT%{_datadir}/%{_name}/log
+
+cp -p -r app config db ext lib Rakefile public script spec vendor $RPM_BUILD_ROOT%{_datadir}/%{_name}
+
+install -Dp -m0644 config/database.yml.example $RPM_BUILD_ROOT%{_sysconfdir}/%{_name}/database.yml
+ln -s %{_sysconfdir}/%{_name}/database.yml $RPM_BUILD_ROOT%{_datadir}/%{_name}/config/database.yml
+ln -s %{_sysconfdir}/%{_name}/settings.yml $RPM_BUILD_ROOT%{_datadir}/%{_name}/config/settings.yml
+install -Dp -m0644 VERSION $RPM_BUILD_ROOT%{_datadir}/%{_name}/VERSION
+chmod a+x $RPM_BUILD_ROOT%{_datadir}/%{_name}/script/*
+
+# Install cron job for adding nodes to default group
+mkdir -p $RPM_BUILD_ROOT/%{_real_sysconfdir}/cron.d
+install -p -m700 ext/default-add-all-nodes $RPM_BUILD_ROOT/%{_real_sysconfdir}/cron.d/
+
+# Install cron job for optimizing MySQL database
+mkdir -p $RPM_BUILD_ROOT/%{_real_sysconfdir}/cron.monthly
+install -p -m700 ext/optimize_database $RPM_BUILD_ROOT/%{_real_sysconfdir}/cron.monthly/pe-puppet-dashboard.optimize_database
+
+# Init Scripts
+install -Dp -m0644 ext/redhat/pe-puppet-dashboard.sysconfig $RPM_BUILD_ROOT/%{_real_sysconfdir}/sysconfig/pe-puppet-dashboard
+install -Dp -m0644 ext/redhat/pe-puppet-dashboard-workers.sysconfig $RPM_BUILD_ROOT/%{_real_sysconfdir}/sysconfig/pe-puppet-dashboard-workers
+%if 0%{?suse_version}
+install -Dp -m0755 ext/redhat/pe-puppet-dashboard-workers.suse $RPM_BUILD_ROOT/%{_real_initrddir}/pe-puppet-dashboard-workers
+%else
+install -Dp -m0755 ext/redhat/pe-puppet-dashboard-workers $RPM_BUILD_ROOT/%{_real_initrddir}/pe-puppet-dashboard-workers
+%endif
+install -Dp -m0644 ext/logrotate $RPM_BUILD_ROOT/%{_real_sysconfdir}/logrotate.d/pe-puppet-dashboard
+
+# Clean up some rpmlint issues
+rm -rf $RPM_BUILD_ROOT%{_datadir}/%{_name}/.git
+rm -f  $RPM_BUILD_ROOT%{_datadir}/%{_name}/spec/models/.gitignore
+rm -f  $RPM_BUILD_ROOT%{_datadir}/%{_name}/app/views/layouts/.gitignore
+rm -f  $RPM_BUILD_ROOT%{_datadir}/%{_name}/public/stylesheets/.gitignore
+rm -f  $RPM_BUILD_ROOT%{_datadir}/%{_name}/spec/views/.gitignore
+
+# Remove packaging artifacts
+for file in packaging \
+            redhat \
+            debian \
+            build_defaults.yaml \
+            project_data.yaml
+do
+    rm -rf $RPM_BUILD_ROOT%{_datadir}/%{_name}/ext/$file
+done
+
+# We don't need zero byte files
+for file in $(find $RPM_BUILD_ROOT -size 0) ; do
+    rm -f "$file"
+done
+
+# Add default auth files to conf.d
+mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/auth.d
+install -Dp -m0644 ext/puppetconsole_auth* $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/auth.d/
+
+# So next we create some zero byte files!!!
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
+touch $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/puppetdashboard.conf
+touch $RPM_BUILD_ROOT%{_sysconfdir}/%{_name}/settings.yml
+
+# Ensure we're using the correct ruby
+for file in `find $RPM_BUILD_ROOT -type f`; do
+    sed -i -e '1s,^#!.*ruby$,#!%{_bindir}/ruby,' $file
+done
+
+touch %{buildroot}%{_localstatedir}/log/%{name}/production.log
+
+# Make the console_apps.d directory
+mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/console_apps.d
+
+%files
+%defattr(-,root,root,0755)
+%if 0%{?suse_version}
+%attr(-,%{dbuser},%{dbuser}) %dir %{_datadir}/%{_name}/tmp/pids
+%endif
+%dir %{_sysconfdir}/httpd/console_apps.d
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/vendor
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/spec
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/tmp
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/script
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/lib
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/ext
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/log
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/db
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/spool
+%config(noreplace) %attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/*yml
+%config(noreplace) %attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/*yml.example
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/environments
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/initializers
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/locales
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/boot.rb
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/preinitializer.rb
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/routes.rb
+%config(noreplace) %attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/config/environment.rb
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/app
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/Rakefile
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/VERSION
+%attr(-,%{dbuser},%{dbuser}) %{_datadir}/%{_name}/public
+%attr(0640,%{dbuser},%{dbuser}) %config(noreplace) %{_sysconfdir}/%{_name}/database.yml
+%attr(0640,%{dbuser},%{dbuser}) %config(noreplace) %{_sysconfdir}/%{_name}/settings.yml
+%config(noreplace,missingok) %{_sysconfdir}/httpd/conf.d/puppetdashboard.conf
+%attr(0755,%{dbuser},%{dbuser}) %{_sysconfdir}/httpd/auth.d
+%config(noreplace) %{_sysconfdir}/httpd/auth.d/puppetconsole_auth.basic
+%config(noreplace) %{_sysconfdir}/httpd/auth.d/puppetconsole_auth.ldap
+%config(noreplace) %{_sysconfdir}/httpd/auth.d/puppetconsole_auth.ad
+%attr(-,%{dbuser},%{dbuser}) %dir %{_localstatedir}/log/%{name}
+%ghost %attr(-,%{dbuser},%{dbuser}) %{_localstatedir}/log/%{name}/production.log
+%{_real_initrddir}/pe-puppet-dashboard-workers
+%{_real_sysconfdir}/sysconfig/pe-puppet-dashboard
+%{_real_sysconfdir}/sysconfig/pe-puppet-dashboard-workers
+%{_real_sysconfdir}/logrotate.d/pe-puppet-dashboard
+%attr(0600,root,root) %{_real_sysconfdir}/cron.d/default-add-all-nodes
+%attr(0700,root,root) %{_real_sysconfdir}/cron.monthly/pe-puppet-dashboard.optimize_database
+
+%changelog
+* <%= Time.now.strftime("%a %b %d %Y") %> Puppet Labs Release <info@puppetlabs.com> -  <%= @rpmversion %>-<%= @rpmrelease %>
+- Build for <%= @version %>
+
+* Mon Aug 12 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.23-3.pe
+- (RE-147) Remove dependency on make by correctly cleaning up the debian/rules file
+
+* Wed Jul 31 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.23-2.pe
+- (PE-1017) Remove dependency on sudo from pe-puppet-dashboard by removing it from the sles init script
+
+* Tue Mar 21 2013 Moses Mendoza <moses@puppetlabs.com> - 1.2.23-1.pe
+- Rebase to upstream 1.2.23, remove patches not applicable
+- Add patch to revert as-of-yet un-battle-tested rake task changes
+
+* Sat Mar 02 2013 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-26.pe1
+- Correct error in comment line
+
+* Wed Feb 27 2013 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-25.pe1
+- Remove spruz from vendored json gem dependencies
+
+* Mon Feb 12 2013 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-24.pe1
+- Remove gem dirs that should have been removed but were left by patch
+
+* Tue Feb 12 2013 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-23.pe
+- Patch for CVE-2013-0277 and CVE-2013-0269
+
+* Tue Jan 29 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-22.pe
+- Patch ActiveSupport for CVE-2013-0333
+
+* Fri Jan 25 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-21.pe
+- (#17914) Patch dashboard (rails) to not include marshalled Act* objects in sessions.
+
+* Wed Jan 22 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-20.pe
+- Remove import of classesgroups.rake in default_group.rake to address double invocation issues
+
+* Tue Jan 15 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-19.pe
+- Add node rake tasks for dashboard classification
+
+* Mon Jan 14 2013 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-18.pe
+- patch for cve-2013-0155
+
+* Tue Jan 08 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-17.pe
+- Apply suggested workaround for CVE-2013-0156
+
+* Wed Jan 02 2013 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-16.pe
+- Patch vendored AR gem for CVE-2012-5664
+
+* Tue Dec 04 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-15.pe
+- Add new nodegroup tasks via patches
+
+* Mon Dec 03 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-14.pe
+- Update default group task to not include request_mananger class.
+
+* Mon Nov 12 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-13.pe
+- Update default group task to lock and decrease rake noise.
+
+* Fri Nov 09 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-12.pe
+- Update default group rake task to only append classes if they aren't included already
+
+* Wed Nov 07 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.10-11.pe
+- Update default group rake task
+
+* Tue Nov 06 2012 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-10.pe
+- Add patch to address session killing
+
+* Mon Nov 05 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-9.pe
+- Add _global_nav.html.haml to source to clobber FOSS version with pe-console-common edition
+
+* Tue Oct 30 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-8.pe
+- Update default_group.rake rake task to add certificate_manager class
+
+* Tue Oct 23 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-7.pe
+- Patch pe-puppet-dashboard for IE css fixes, remove PE 1.2.5 patches
+
+* Fri Oct 12 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-6.pe
+- Fixup version link for PE 1.2.5
+
+* Fri Oct 12 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-5.pe
+- Put session_secret back in for 1.2.5
+
+* Tue Sep 25 2012 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-4.pe
+- Add patch to specify favicon location on error pages
+
+* Mon Sep 24 2012 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-3.pe
+- Add patch to remove autorefresh link
+
+* Tue Sep 11 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.10-2.pe
+- Update default_group.rake to create default group
+
+* Fri Sep 10 2012 Moses Mendoza <moses@puppetlabs.com> - 1.2.10-1.pe
+- Update to version 1.2.10 for PE 2.6
+
+* Fri Aug 31 2012 Matthaus Owens <matthaus@puppetlabs.com> - 1.2.7-12.pe
+- Add default_group.rake and update default-add-all-nodes to call updated task
+
+* Mon Jul 09 2012 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.7-11.pe
+- Remove pe-console-auth dependency
+
+* Thu Jul 05 2012 William Hopper <whopper@puppetlabs.com> - 1.2.7-10.pe
+- (#15384) Add patch for broken node:classes rake task
+
+* Mon Jul 02 2012 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.7-9.pe
+- Change permissions of default-add-all-nodes to 0600 to make vixie-cron happy
+
+* Tue Jun 26 2012 William Hopper <whopper@puppetlabs.com> - 1.2.7-8.pe
+- (#14294) Log errors from dashboard's database optimization cron job
+
+* Mon Jun 25 2012 William Hopper <whopper@puppetlabs.com> - 1.2.7-7.pe
+- (#14294) Add monthly cron job to optimize database, as suggested in the docs
+
+* Fri Jun 15 2012 William Hopper <whopper@puppetlabs.com> - 1.2.7-6.pe
+- Add patch for CVE-2012-2660
+
+* Thu Jun 14 2012 Moses Mendoza <moses@puppetlabs.com> - 1.2.7-5.pe
+- Add patch for CVE-2012-2695
+
+* Thu Jun 07 2012 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.7-4.pe
+- Update pe-puppet-dashboard-workers start and stop levels.
+
+* Thu May 17 2012 Moses Mendoza <moses@puppetlabs.com> - 1.2.7-3.pe
+- Add patch for (#5879) Remove finder on obsolete URL column
+
+* Tue May 08 2012 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.7-2.pe
+- (#14309) Remove errant initializer /opt/puppet/share/puppet-dashboard/config/initializers/session_store.rb
+
+* Mon Mar 26 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.7-1.pe
+- Rebase to 1.2.7
+
+* Thu Mar 22 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.6-7.pe
+- Remove /var/opt usage and stick to opt
+
+* Wed Mar 21 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.6-6.pe
+- Creating a jumbo patch
+
+* Tue Mar 13 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.6-4.pe
+- Add patch for Nav header bar
+
+* Thu Mar 01 2012 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.6-2.pe
+- Removing CVE patches, which are rolled into 1.2.6, remove RELEASE_NOTES.md
+
+* Thu Mar 01 2012 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.6-1.pe
+- Updating to Puppet Dashboard 1.2.6
+
+* Wed Feb 29 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.4-5.pe
+- Add a console_apps.d directory
+
+* Fri Jan 20 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.4-4.pe
+- CVE-2012-0891
+
+* Thu Jan 19 2012 Michael Stahnke <mastahnke@gmail.com> - 1.2.4-3.pe
+- Add input patch
+
+* Fri Jan 06 2012 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.4-2.pe
+- To avoid css,js permissions problems with dashboard, add apache to the dashboard group
+
+* Thu Jan 05 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.4-1.pe
+- Update to 1.2.4
+
+* Tue Jan 03 2012 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.2-11.pe
+- Be less strict on Ruby version
+
+* Tue Nov 08 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.2-10.pe
+- Cron job with correct permissions
+- Again
+
+* Tue Nov 08 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.2-8.pe
+- Patch layout per Randall
+
+* Tue Nov 08 2011 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.2-7.pe
+- Add the default-add-all-nodes script to installation
+
+* Mon Nov 07 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.2-6.pe
+- Remove the bin/external_node file
+
+* Fri Nov 04 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.2-5.pe
+- Add new rake task via patch1
+
+* Fri Nov 04 2011 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.2-4.pe
+- Update console passwd location
+
+* Tue Nov 01 2011 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.2-3.pe
+- Add default auth files for console to httpd/conf.d dir
+
+* Fri Oct 21 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.2-2.pe
+- Add patch for view with zero nodes
+
+* Mon Oct 10 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.2-1.pe
+- Update to version 1.2.2
+
+* Tue Sep 20 2011 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2.0-2.pe
+- Add dashboard-workers to chkconfig
+
+* Fri Aug 26 2011 Michael Stahnke <stahnma@puppetlabs.com> - 1.2.0-1.pe
+- Release 1.2.0
+
+* Thu Aug 18 2011 Matthaus Litteken <matthaus@puppetlabs.com> - 1.2-0.4rc6.pe
+- Bumped release to 0.4 for PE 1.2
+
+* Mon Aug 08 2011 Michael Stahnke <stahnma@puppetlabs.com> -  1.2-0.31rc6.pe
+- Prep for PE 1.2
+
+* Tue Jan  4 2011 Jacob Helwig <jacob@puppetlabs.com> - 1.0.4-2
+- Mark generated config file as a config file

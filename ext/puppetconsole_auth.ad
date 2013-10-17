@@ -1,0 +1,14 @@
+<Location />
+    AuthType Basic
+    AuthBasicProvider ldap
+    AuthName "Puppet Enterprise Console"
+
+    # Binding credentials, most AD doesn't allow anon binding.
+    AuthLDAPBindDN "CN=AD User,CN=Users,DC=adtest,DC=local"
+    AuthLDAPBindPassword "adpasswd"
+
+    # User specification
+    AuthLDAPURL "ldap://win2k3server.localdomain/CN=Users,dc=adtest,dc=local?sAMAccountName?sub?(objectClass=*)"
+
+    require valid-user
+</Location>

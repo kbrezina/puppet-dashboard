@@ -1,0 +1,12 @@
+#!/bin/bash
+# Optimize MySQL Database
+
+set -u
+
+PE_BIN_PATH=/opt/puppet/bin
+PE_DB_PATH=/opt/puppet/share/puppet-dashboard
+
+output=`${PE_BIN_PATH}/rake -s -f ${PE_DB_PATH}/Rakefile RAILS_ENV=production db:raw:optimize 2>&1 1> /dev/null`
+if [ $? -ne 0 ]; then
+  logger -i "${output}"
+fi

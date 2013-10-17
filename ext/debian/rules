@@ -3,49 +3,69 @@
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/buildcore.mk
 
+pe_prefix = opt/puppet
+pe_etc = etc/puppetlabs
 ruby_ver = 1.8
 
-binary-install/puppet-dashboard::
-	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/etc/puppet-dashboard
-	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/certs
-	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/var/$(cdbs_curpkg)/tmp
-	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/var/log/puppet-dashboard
-	dh_installinit --name=puppet-dashboard-workers
+binary-install/pe-puppet-dashboard::
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/puppet-dashboard
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/opt/puppet/share/puppet-dashboard/tmp/pids
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/opt/puppet/share/puppet-dashboard/public
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/var/log/pe-puppet-dashboard
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/etc/puppetlabs/httpd/console_apps.d
+	dh_installinit --name=pe-puppet-dashboard-workers
 	cp -r app \
-	    bin \
-	    config \
-	    db \
-	    ext \
-	    lib \
-	    Rakefile \
-	    script \
-	    spec \
-      examples \
-	    vendor \
-		VERSION \
-	    $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard
-	cp $(CURDIR)/config/database.yml.example $(CURDIR)/debian/$(cdbs_curpkg)/etc/puppet-dashboard/database.yml
-	cp $(CURDIR)/config/settings.yml.example $(CURDIR)/debian/$(cdbs_curpkg)/etc/puppet-dashboard/settings.yml
-	cp -r $(CURDIR)/public $(CURDIR)/debian/$(cdbs_curpkg)/var/$(cdbs_curpkg)
-	chmod -R a+rx $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/script
-	rm -rf $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/ext/{redhat,debian,build_defaults.yaml,project_data.yaml}
+			config \
+			db \
+			ext \
+			lib \
+			Rakefile \
+			script \
+			spec \
+			vendor \
+			VERSION \
+			$(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard
+	cp $(CURDIR)/config/database.yml.example $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/puppet-dashboard/database.yml
+	cp $(CURDIR)/config/settings.yml.example $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/puppet-dashboard/settings.yml
+	cp -pr $(CURDIR)/public/* $(CURDIR)/debian/$(cdbs_curpkg)/opt/puppet/share/puppet-dashboard/public
+	chmod -R a+rx $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script
+	rm -rf $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/ext/packaging
+	for file in redhat \
+							debian \
+							build_defaults.yaml \
+							project_data.yaml ; \
+	do rm -rf $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/ext/$$file ; \
+	done
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d
+	touch $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/conf.d/puppetdashboard.conf
+	# Copy example auth files
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/auth.d
+	cp $(CURDIR)/ext/puppetconsole_auth.* $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_etc)/httpd/auth.d/
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/spool
+	# Install cron job
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/etc/cron.monthly $(CURDIR)/debian/$(cdbs_curpkg)/etc/cron.d
+	cp $(CURDIR)/ext/optimize_database $(CURDIR)/debian/$(cdbs_curpkg)/etc/cron.monthly/pe-puppet-dashboard
+	cp $(CURDIR)/ext/default-add-all-nodes $(CURDIR)/debian/$(cdbs_curpkg)/etc/cron.d
+	# Install logrotate
+	mkdir -p $(CURDIR)/debian/$(cdbs_curpkg)/etc/logrotate.d
+	cp $(CURDIR)/ext/logrotate $(CURDIR)/debian/$(cdbs_curpkg)/etc/logrotate.d/pe-puppet-dashboard
 	# Clean up the "extra" files
-	rm -f $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/config/database.yml.example
-	rm -f $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/config/settings.yml.example
-	rm -f $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor/plugins/*/*LICENSE
-	rm -f $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor/plugins/*/License.txt
-	rm -f $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor/gems/*/*LICENSE
-	rm -f $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor/gems/*/License.txt
-	rm -f $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor/rails/*/*LICENSE
+	rm $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor/plugins/*/*LICENSE
+	rm $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor/gems/*/COPYING
+	rm $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor/gems/*/*LICENSE
+	rm $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor/rails/*/*LICENSE
 	find $(CURDIR)/debian/$(cdbs_curpkg) -name .gitignore -exec rm {} \;
-	find $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor -name LICENSE -exec rm {} \;
-	find $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor -name MIT-LICENSE -exec rm {} \;
-	find $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor -type f -exec chmod a-x {} \;
-	find $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/app -type f -exec chmod a-x {} \;
-	find $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/spec -type f -exec chmod a-x {} \;
+	find $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor -name LICENSE -exec rm {} \;
+	find $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor -name MIT-LICENSE -exec rm {} \;
+	find $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor -type f -exec chmod a-x {} \;
+	find $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/app -type f -exec chmod a-x {} \;
+	find $(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/spec -type f -exec chmod a-x {} \;
 	# Fixup shebang lines
+	bash $(CURDIR)/debian/fixshebang.sh ruby$(ruby_ver) \
+			$(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/script
 	bash $(CURDIR)/debian/rmshebang.sh \
-	    $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/lib \
-	    $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/app \
-	    $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/spec \
-	    $(CURDIR)/debian/$(cdbs_curpkg)/usr/share/puppet-dashboard/vendor
+			$(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/lib \
+			$(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/app \
+			$(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/spec \
+			$(CURDIR)/debian/$(cdbs_curpkg)/$(pe_prefix)/share/puppet-dashboard/vendor
