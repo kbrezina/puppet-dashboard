@@ -22,7 +22,6 @@
 # source function library
 . /lib/lsb/init-functions
 
-#name=puppet-dashboard-workers
 name=pe-puppet-dashboard-workers
 
 # pull in sysconfig settings

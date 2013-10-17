@@ -23,7 +23,6 @@
 # source function library
 . /etc/rc.d/init.d/functions
 
-#name=puppet-dashboard-workers
 name=pe-puppet-dashboard-workers
 
 # pull in sysconfig settings
